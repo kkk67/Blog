@@ -12,9 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -41,9 +44,11 @@ public class Board {
 	private int count; //조회수
 	
 	@OneToMany(mappedBy = "board",fetch = FetchType.EAGER) // mappedBy 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 컬럼을 만들지 마세요 
+	@JsonIgnoreProperties("board")
+	@OrderBy("id desc")
 	//값은 연관관계 주인의 변수명 Board board
 	//EAGER은 홈페이지 로딩과 함께 바로 값을 가져오는 전략 , LAZY는 바로는 안 가져오지만 다른 버튼을 눌러서 댓글이 나오게하면 LAZY전략
-	private List <Reply> reply;
+	private List <Reply> replys;
 	
 	@CreationTimestamp
 	private Timestamp createDate;

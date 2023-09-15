@@ -25,7 +25,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-		<a class="navbar-brand" href="/">홈</a>
+		<a class="navbar-brand" href="/"> 홈 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#collapsibleNavbar">
 			<span class="navbar-toggler-icon"></span>
@@ -45,7 +45,7 @@
 						<li class="nav-item"><a class="nav-link"
 							href="/board/saveForm">글쓰기</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="user/updateForm">회원정보</a></li>
+							href="/auth/updateForm">회원정보</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="/logout">로그아웃</a></li>
 					</ul>
@@ -53,6 +53,5 @@
 			</c:choose>
 		</div>
 	</nav>
-	<br>
-	</br>
+	<br/>
 </body>

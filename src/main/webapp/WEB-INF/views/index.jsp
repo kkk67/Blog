@@ -13,7 +13,7 @@
 			</div>
 		</div>
 	</c:forEach>
-	<ul class="pagination justify-content-center">
+	<ul class="pagination  justify-content-center">
 		<c:choose>
 			<c:when test="${boards.first }">
 					<li class="page-item disabled"><a class="page-link"
@@ -24,7 +24,9 @@
 			href="?page=${boards.number-1}">Previous</a></li>
 			</c:otherwise>
 		</c:choose>
-
+		<c:forEach var="page" begin="0" end="${Total-1}">
+				<li class="page-item"><a class="page-link" href="?page=${page}">${page+1}</a></li>
+		</c:forEach>
 		<c:choose>
 			<c:when test="${boards.last }">
 				<li class="page-item disabled"><a class="page-link"

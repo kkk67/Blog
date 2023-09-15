@@ -1,9 +1,12 @@
 package com.cos.blog.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
@@ -20,6 +23,15 @@ public class UserService {
 		@Autowired
 		private BCryptPasswordEncoder encoder;
 		
+		@Transactional(readOnly = true)
+		public User 회원찾기(String username) {
+			User user = userRepository.findByUsername(username).orElseGet(()->{
+				return new User();
+			});
+			
+			return user;
+		}
+		
 		@Transactional
 		public int 회원가입(User user) {
 			try {
@@ -34,6 +46,26 @@ public class UserService {
 				System.out.println("UserService : 회원가입() : " + e.getMessage());
 			}
 			return -1;
+		}
+		
+		
+		
+		@Transactional
+		public void 회원수정(User user) {
+			//수정시에는 영속성 컨텍스트 user 오브젝트를 영속화 시키고 영속화된 user 오브젝트를 수정
+			// select를 해서 오브젝트를 가져오는 이유는 영속화를 하기위해서
+			User persistance = userRepository.findById(user.getId()).orElseThrow(()->{
+				return new IllegalArgumentException("회원 찾기 실패");
+			});
+			// validation 체크
+			if(persistance.getOauth() == null || persistance.getOauth().equals("")) {
+				String rawPassword = user.getPassword(); //원문
+				String encPassword = encoder.encode(rawPassword); // 해쉬화
+				persistance.setPassword(encPassword);
+				persistance.setEmail(user.getEmail());				
+			}
+			
+			// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = 커밋 자동
 		}
 		
 		/*

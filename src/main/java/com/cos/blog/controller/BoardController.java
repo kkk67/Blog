@@ -18,10 +18,13 @@ public class BoardController {
 	private BoardService boardService;
 	
 	//@AuthenticationPrincipal PrincipalDetail principal
-	
+	//@PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC)Pageable pageable
 	@GetMapping({"/",""})
 	public String index(Model model,@PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC)Pageable pageable) {
+		int Total = boardService.글목록(pageable).getTotalPages();
 		model.addAttribute("boards", boardService.글목록(pageable));
+		model.addAttribute("Total", Total);
+		System.out.println(model);
 		return "index"; // viewResolver 작동
 	}
 	

@@ -4,7 +4,7 @@
 <%@ include file="../layout/header.jsp"%>
 <div class="container">
 	<form action="#" method="post">
-	<input type="hidden" id="id" value="${board.id }" />
+	<input type="hidden" id="id" value="${board.id}" />
 		<div class="form-group">
 			<input value="${board.title}" type="text" class="form-control" placeholder="Enter title" id="title">
 		</div>
