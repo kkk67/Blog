@@ -18,6 +18,10 @@ spring:
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
     username: cos
     password: cos1234
+  data:
+    web:
+      pageable:
+          one-indexed-parameters: true
 
     
   jpa:

@@ -10,6 +10,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,12 +37,17 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; // 시퀀스,auto_increment
 	
+	@NotBlank(message = "아이디를 입력해주세요.")
+	@Size(min=3, max=15,message = "아이디는 3자 이상 15자 이하로 입력해주세요.")
 	@Column(nullable = false,length = 100,unique = true)
 	private String username; // 아이디
 	
+	@NotBlank(message ="비밀번호를 입력해주세요.")
 	@Column(nullable = false,length = 100) // 123456 => 해쉬(비밀번호 암호화)
 	private String password;
 	
+	@NotBlank(message="이메일을 입력해주세요")
+	@Email(message="올바른 이메일 주소를 입력해주세요.")
 	@Column(nullable = false,length = 50)
 	private String email;
 	

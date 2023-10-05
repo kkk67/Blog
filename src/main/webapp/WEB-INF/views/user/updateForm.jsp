@@ -19,7 +19,6 @@
 			<label for="email">Email address:</label> <input type="email"
 				class="form-control"  value=" ${principal.user.email }"  placeholder="Enter email" id="email" >
 		</div>
-			<button id="btn-update" class="btn btn-primary">수정</button>
 		</c:if>
 
 		<c:if test="${not empty principal.user.oauth }">
@@ -30,9 +29,14 @@
 		<div class="form-group">
 			<label for="email">Email address:</label> <input type="email"
 				class="form-control"  value=" ${principal.user.email }"  placeholder="Enter email" id="email" readonly>
-			</div>
+		</div>
+
 		</c:if>
 	</form>
+			<button id="check-email" type="button" class="btn btn-secondary" >중복확인</button>
+			<button id="btn-update" class="btn btn-primary">수정</button>
+			<button id="btn-delete"  onclick="index.delete(${principal.user.id})"  class="btn btn-danger">회원탈퇴</button>
+			<span id="emailResult"></span> 	
 </div>
 <script src ="/js/user.js"></script>
 <%@ include file="../layout/footer.jsp"%>

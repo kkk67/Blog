@@ -3,25 +3,31 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div class="container">
-	<form>
+<div class="container justify-content-center">
+	<form class="form-horizontal">
 		<div class="form-group">
-			<label for="username">Username</label> <input type="text"
-				class="form-control" placeholder="Enter Username" id="username">
+			<label  for="username">Username</label>
+			 <input type="text" class="form-control " placeholder="Enter Username" id="username">
+			<button id="check-username" type="button" class=" btn btn-secondary">중복확인</button>
+			<span id="userNameResult"></span>
 		</div>
 
-		<div class="form-group">
-			<label for="password">Password:</label> <input type="password"
-				class="form-control" placeholder="Enter password" id="password">
-		</div>
 
 		<div class="form-group">
-			<label for="email">Email address:</label> <input type="email"
-				class="form-control" placeholder="Enter email" id="email">
+			<label for="password">Password</label> 			
+			<input type="password" class="form-control " placeholder="Enter password" id="password">
 		</div>
 
+
+		<div class="form-group">
+				<label for="email">Email address</label>
+			 <input type="email" class="form-control" placeholder="Enter email" id="email">
+			<button id="check-email" type="button" class="btn btn-secondary">중복확인</button>
+			<span id="emailResult"></span>
+		</div>
 	</form>
-	<button id="btn-save" class="btn btn-primary">회원가입</button>
+	<br />
+	<button id="btn-save" class="btn btn-primary ">회원가입</button>
 </div>
-<script src ="/js/user.js"></script>
+<script src="/js/user.js"></script>
 <%@ include file="../layout/footer.jsp"%>

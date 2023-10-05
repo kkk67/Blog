@@ -82,7 +82,6 @@ let index = {
 			boardid:$("#boardid").val()
 		};
 		
-	
 		$.ajax({
 			type: "POST",
 			url: `/api/board/${data.boardid}/reply`, 
@@ -110,8 +109,7 @@ let index = {
 		}).fail(function(error){ //실패
 			alert(JSON.stringify(error));
 		}); 
-		
 	},
-	
+		
 }
 index.init();

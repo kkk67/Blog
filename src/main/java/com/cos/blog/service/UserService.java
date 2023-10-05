@@ -1,11 +1,21 @@
 package com.cos.blog.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cos.blog.model.RoleType;
@@ -22,6 +32,7 @@ public class UserService {
 		
 		@Autowired
 		private BCryptPasswordEncoder encoder;
+		
 		
 		@Transactional(readOnly = true)
 		public User 회원찾기(String username) {
@@ -62,10 +73,46 @@ public class UserService {
 				String rawPassword = user.getPassword(); //원문
 				String encPassword = encoder.encode(rawPassword); // 해쉬화
 				persistance.setPassword(encPassword);
-				persistance.setEmail(user.getEmail());				
+				persistance.setEmail(user.getEmail());	
 			}
 			
 			// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = 커밋 자동
+		}
+		
+		@Transactional
+		public void 회원탈퇴(int id) {
+			userRepository.deleteById(id);
+		}
+		// true: 중복
+		@Transactional(readOnly = true)
+		public boolean checkUsernameDuplication(String username) {
+			boolean usernameDuplicate = userRepository.existsByUsername(username);
+
+			return usernameDuplicate;
+			
+		}
+		
+		@Transactional(readOnly = true)
+		public boolean checkEmailDuplication(String email) {
+			boolean emailDuplicate = userRepository.existsByEmail(email);
+			
+			return  emailDuplicate;
+		}
+		
+		@Transactional
+		public void UsernameError(String username) {
+			boolean usernameDuplicate = userRepository.existsByUsername(username);
+			if(usernameDuplicate) {
+				throw new IllegalStateException("이미 존재하는 아이디입니다.");
+			}
+		}
+		
+		@Transactional
+		public void EmailError(String email) {
+			boolean emailDuplicate = userRepository.existsByEmail(email);
+			if(emailDuplicate) {
+				throw new IllegalStateException("이미 존재하는 이메일입니다.");
+			}
 		}
 		
 		/*

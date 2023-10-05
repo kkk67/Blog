@@ -12,9 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.cos.blog.model.KakaoProfile;
@@ -44,13 +46,20 @@ public class UserController {
 	public String joinForm() {
 		return "user/joinForm";
 	}
-	@GetMapping("/auth/loginForm")
-	public String loginForm() {
-		return "user/loginForm";
-	}
+
+	/*
+	 * @GetMapping("/auth/loginForm") public String loginForm() { return
+	 * "user/loginForm"; }
+	 */
 	@GetMapping("/auth/updateForm")
 	public String updateForm() {
 		return "user/updateForm";
+	}
+	@GetMapping("/auth/loginForm")
+	public String login(@RequestParam(value="error",required = false)String error,@RequestParam(value="exception",required = false)String exception,Model model) {
+		model.addAttribute("error", error);
+		model.addAttribute("exception", exception);
+		return "user/loginForm";
 	}
 	@GetMapping("/auth/kakao/callback")
 	public  String kakaoCallback(String code) { // 데이터를 리턴해주는 컨트롤러 함수
@@ -128,7 +137,7 @@ public class UserController {
 				System.out.println("카카오 아이디(번호) : "+kakaoProfile.getId());
 				System.out.println("카카오 이메일 : "+ kakaoProfile.getKakao_account().getEmail());
 
-				System.out.println("블로그서버 유저네임: " + kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId());
+				System.out.println("블로그서버 유저네임: " +kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId());
 				System.out.println("블로그서버 이메일: " + kakaoProfile.getKakao_account().getEmail());
 				System.out.println("블로그서버 비밀번호: " + cosKey);
 				
@@ -143,6 +152,8 @@ public class UserController {
 				User originUser = userService.회원찾기(kakaouser.getUsername());
 				
 				if(originUser.getUsername() == null) {
+					userService.UsernameError(kakaouser.getUsername());
+					userService.EmailError(kakaouser.getEmail());
 					userService.회원가입(kakaouser);					
 				}
 				// 로그인 처리

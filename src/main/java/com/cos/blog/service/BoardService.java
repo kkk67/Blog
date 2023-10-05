@@ -36,11 +36,6 @@ public class BoardService {
 		}
 		@Transactional(readOnly = true)
 		public Page<Board> 글목록(Pageable pageable){
-			/*
-			 * pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 :
-			 * pageable.getPageNumber() -1 , pageable.getPageSize(),sort);
-			 */
-			
 			return boardRepository.findAll(pageable);
 		};
 		@Transactional(readOnly = true)

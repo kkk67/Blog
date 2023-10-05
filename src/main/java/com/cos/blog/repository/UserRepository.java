@@ -12,6 +12,8 @@ import com.cos.blog.model.User;
 // @Repository 생략 가능
 public interface UserRepository extends JpaRepository<User, Integer> {
 	Optional<User> findByUsername(String username);
+	boolean existsByEmail(String email);
+	boolean existsByUsername(String username);
 }
 
 // JPA Naming 전략

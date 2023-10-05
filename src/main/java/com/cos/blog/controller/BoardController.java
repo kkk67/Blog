@@ -17,6 +17,11 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	/*
+	 * @Bean public PageableHandlerMethodArgumentResolverCustomizer customize() {
+	 * return p -> { p.setOneIndexedParameters(true); }; }
+	 */
+	
 	//@AuthenticationPrincipal PrincipalDetail principal
 	//@PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC)Pageable pageable
 	@GetMapping({"/",""})
@@ -25,6 +30,11 @@ public class BoardController {
 		model.addAttribute("boards", boardService.글목록(pageable));
 		model.addAttribute("Total", Total);
 		System.out.println(model);
+		/*
+		 * System.out.println(boardService.글목록(pageable).getNumber()); // 페이지 번호
+		 * System.out.println(boardService.글목록(pageable).getTotalElements()); // 총 게시물
+		 * 개수
+		 */		
 		return "index"; // viewResolver 작동
 	}
 	

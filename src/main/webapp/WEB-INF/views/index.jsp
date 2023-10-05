@@ -17,24 +17,32 @@
 		<c:choose>
 			<c:when test="${boards.first }">
 					<li class="page-item disabled"><a class="page-link"
-			href="?page=${boards.number-1}">Previous</a></li>
+			href="">Previous</a></li>
 			</c:when>
 			<c:otherwise>
 		<li class="page-item"><a class="page-link"
-			href="?page=${boards.number-1}">Previous</a></li>
+			href="?page=${boards.number}">Previous</a></li>
 			</c:otherwise>
 		</c:choose>
-		<c:forEach var="page" begin="0" end="${Total-1}">
-				<li class="page-item"><a class="page-link" href="?page=${page}">${page+1}</a></li>
+		<c:forEach var="page" begin="1" end="${Total}">
+				<c:choose>
+				<c:when test="${boards.number eq page-1}">
+					<li class="page-item active"><a class="page-link" href="?page=${page}">${page}</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="?page=${page}">${page}</a></li>
+				</c:otherwise>
+				</c:choose>
 		</c:forEach>
+		
 		<c:choose>
 			<c:when test="${boards.last }">
 				<li class="page-item disabled"><a class="page-link"
-			href="?page=${boards.number+1}">Next</a></li>
+			href="">Next</a></li>
 			</c:when>
 			<c:otherwise>
 			<li class="page-item"><a class="page-link"
-			href="?page=${boards.number+1}">Next</a></li>
+			href="?page=${boards.number+2}">Next</a></li>
 			</c:otherwise>
 		</c:choose>
 	</ul>

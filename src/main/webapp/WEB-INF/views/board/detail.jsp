@@ -22,8 +22,7 @@
 		<div>
 			<div>${board.content}</div>
 		</div>
-		<hr/>
-		
+		<hr/>	
 		<div class="card">
 			<form>
 			<input type="hidden" id="userid" value="${principal.user.id}"/>
