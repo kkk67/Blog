@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable() // csrf 토큰 비활성화 (테스트시 걸어두는 게 좋음)
 			.authorizeRequests()
-			.antMatchers("/auth/**","/js/**","/css/**","/image/**","/","/favicon.ico","/Message")
+			.antMatchers("/auth/**","/js/**","/css/**","/image/**","/","/favicon.ico","/Message","/search/**","/mail/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin()
 			.loginPage("/auth/loginForm")
 			.loginProcessingUrl("/auth/loginProc")// 스프링 시큐리티가 해당 주소로 오는 요청을 가로채서 대신 로그인 해줌.
-			.failureHandler(failureHandler());
+			.failureHandler(failureHandler()); 
 		//.defaultSuccessUrl("/");
 		
 		http.logout()

@@ -1,25 +1,21 @@
 package com.cos.blog.service;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import com.cos.blog.dto.UpdateUserDto;
+import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
+import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
 import com.cos.blog.repository.UserRepository;
 
 //서비스는 하나의 트랜잭션(작업 단위)면 상관이 없지만 두 개 이상의 트랜잭션을 한번에 수행하기 위하여 사용한다.
@@ -31,16 +27,30 @@ public class UserService {
 		private UserRepository userRepository;
 		
 		@Autowired
+		private BoardRepository boardRepository;
+		
+		@Autowired
+		private ReplyRepository replyRepository;
+		
+		@Autowired
 		private BCryptPasswordEncoder encoder;
 		
 		
 		@Transactional(readOnly = true)
-		public User 회원찾기(String username) {
+		public User 회원이름찾기(String username) {
 			User user = userRepository.findByUsername(username).orElseGet(()->{
 				return new User();
 			});
 			
 			return user;
+		}
+		
+		@Transactional(readOnly = true)
+		public User 회원아이디찾기(int id) {
+			System.out.println("받은 id 값: " + id);
+			return userRepository.findById(id).orElseThrow(()->{
+				return new  IllegalArgumentException("회원 찾기 실패");
+			});
 		}
 		
 		@Transactional
@@ -80,47 +90,61 @@ public class UserService {
 		}
 		
 		@Transactional
-		public void 회원탈퇴(int id) {
-			userRepository.deleteById(id);
+		public void 회원탈퇴(int id) {	
+			Optional<User> userEntity = userRepository.findById(id);
+			
+			if(boardRepository.existsByUser(userEntity.get())) { // 회원이 작성한 게시글이 있으면
+				List<Board> boardEntity = boardRepository.findByUser(userEntity.get()); 
+				for(int i=0; i<boardEntity.size(); i++) { // 게시글 만큼
+					if(replyRepository.existsByBoardId(boardEntity.get(i).getId())) { // 게시글 안에 댓글이 있으면(본인과 다른사람의 댓글)
+						replyRepository.deleteByBoardId(boardEntity.get(i).getId()); // 댓글 삭제
+					}
+					boardRepository.deleteById(boardEntity.get(i).getId()); // 게시글 삭제
+				}
+			}
+			if(replyRepository.existsByUser(userEntity.get())) { // 회원이 작성한 댓글이 있다면
+				List<Reply> ReplyList = replyRepository.findByUser(userEntity.get()); 
+				
+				for(int i=0; i<ReplyList.size(); i++) { 
+					replyRepository.deleteById(ReplyList.get(i).getId()); // 댓글 삭제
+				}
+			}
+			
+			 userRepository.deleteById(id);  //회원탈퇴
 		}
+		
 		// true: 중복
 		@Transactional(readOnly = true)
-		public boolean checkUsernameDuplication(String username) {
+		public String checkUsernameDuplication(String username) {
 			boolean usernameDuplicate = userRepository.existsByUsername(username);
 
-			return usernameDuplicate;
+			if(usernameDuplicate == true) { // 중복
+				return "아이디가 중복됩니다.";
+			}else {
+				return "사용가능한 아이디입니다.";
+			}
 			
 		}
 		
 		@Transactional(readOnly = true)
-		public boolean checkEmailDuplication(String email) {
+		public String checkEmailDuplication(String email) {
 			boolean emailDuplicate = userRepository.existsByEmail(email);
 			
-			return  emailDuplicate;
-		}
-		
-		@Transactional
-		public void UsernameError(String username) {
-			boolean usernameDuplicate = userRepository.existsByUsername(username);
-			if(usernameDuplicate) {
-				throw new IllegalStateException("이미 존재하는 아이디입니다.");
-			}
-		}
-		
-		@Transactional
-		public void EmailError(String email) {
-			boolean emailDuplicate = userRepository.existsByEmail(email);
-			if(emailDuplicate) {
-				throw new IllegalStateException("이미 존재하는 이메일입니다.");
+			if(emailDuplicate == true) { // 중복
+				return "이메일이 중복됩니다.";
+			}else {
+				return "사용가능한 이메일입니다..";
 			}
 		}
 		
 		/*
-		 * @Transactional(readOnly = true) // select할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료 (정합성
-		 * 유지) public User 로그인(User user) { return
-		 * userRepository.findByUsernameAndPassword(user.getUsername(),
-		 * user.getPassword());
-		 * 
+		 * @Transactional public void UsernameError(String username) { boolean
+		 * usernameDuplicate = userRepository.existsByUsername(username);
+		 * if(usernameDuplicate) { throw new IllegalStateException("이미 존재하는 아이디입니다."); }
 		 * }
+		 * 
+		 * @Transactional public void EmailError(String email) { boolean emailDuplicate
+		 * = userRepository.existsByEmail(email); if(emailDuplicate) { throw new
+		 * IllegalStateException("이미 존재하는 이메일입니다."); } }
 		 */
 }

@@ -33,7 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class UserController {
-	@Value("${cos.key}")
+	
+	@Value("${cos.key}") // 카카오 로그인 비밀번호
 	private String cosKey;
 	
 	@Autowired
@@ -46,11 +47,7 @@ public class UserController {
 	public String joinForm() {
 		return "user/joinForm";
 	}
-
-	/*
-	 * @GetMapping("/auth/loginForm") public String loginForm() { return
-	 * "user/loginForm"; }
-	 */
+	
 	@GetMapping("/auth/updateForm")
 	public String updateForm() {
 		return "user/updateForm";
@@ -61,7 +58,18 @@ public class UserController {
 		model.addAttribute("exception", exception);
 		return "user/loginForm";
 	}
-	@GetMapping("/auth/kakao/callback")
+	
+	@GetMapping("/auth/deleteForm")
+	public String delete() {
+		return "user/deleteForm";
+	}
+	
+	@GetMapping("/auth/ConfirmForm")
+	public String Confirm() {
+		return "user/ConfirmForm";
+	}
+	
+	@GetMapping("/auth/kakao/callback") // 인가코드를 code에 받아서 매핑됨
 	public  String kakaoCallback(String code) { // 데이터를 리턴해주는 컨트롤러 함수
 		
 		//POST방식으로 key-value 데이터를 요청(카카오쪽으로)
@@ -82,6 +90,7 @@ public class UserController {
 		HttpEntity<MultiValueMap<String, String>> kakaoTokenReqeust = 
 				new HttpEntity<>(params,headers);
 		
+		//토큰 발급 요청
 		//Http 요청하기 - post방식으로 - 그리고 response변수의 응답
 		ResponseEntity<String> response = rt.exchange(
 				"https://kauth.kakao.com/oauth/token",
@@ -102,6 +111,7 @@ public class UserController {
 		}
 		System.out.println("카카오 엑세스 토큰: "+oauthToken.getAccess_token());
 		
+		//토큰을 사용하여 사용자 정보 가져오기
 		
 		//POST방식으로 key-value 데이터를 요청(카카오쪽으로)
 				RestTemplate rt2 = new RestTemplate();
@@ -149,11 +159,10 @@ public class UserController {
 						.build();
 				
 				//가입자 혹은 비가입자 체크 해서 처리
-				User originUser = userService.회원찾기(kakaouser.getUsername());
+				User originUser = userService.회원이름찾기(kakaouser.getUsername());
 				
 				if(originUser.getUsername() == null) {
-					userService.UsernameError(kakaouser.getUsername());
-					userService.EmailError(kakaouser.getEmail());
+					System.out.println(kakaouser);
 					userService.회원가입(kakaouser);					
 				}
 				// 로그인 처리

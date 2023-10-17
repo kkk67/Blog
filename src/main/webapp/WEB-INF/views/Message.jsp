@@ -7,10 +7,10 @@
 <meta charset="UTF-8">
 <title>에러 페이지</title>
 <script>
-var message = "${msg}";
-var url = "${url}";
-alert(message);
-document.location.href = url;
+	var message = "${msg}";
+	var url = "${url}";
+	alert(message);
+	document.location.href = url;
 </script>
 </head>
 <body>

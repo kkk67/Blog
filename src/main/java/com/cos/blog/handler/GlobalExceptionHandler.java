@@ -19,6 +19,12 @@ public class GlobalExceptionHandler {
 		String ErrorMessage = "에러 메세지: "+e.getMessage();
 		return ErrorMessage;
 	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public Object BadCreEx(Exception e) {
+		String ErrorMessage = "에러 메세지: "+e.getMessage();
+		return ErrorMessage;
+	}
 
 	@ExceptionHandler(value = Exception.class)
 	public ResponseDto<String> handleArgumentException(Exception e) {

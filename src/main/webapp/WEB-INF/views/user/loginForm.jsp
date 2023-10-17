@@ -14,7 +14,7 @@
 			<label for="password">Password:</label> <input type="password"  name="password"
 				class="form-control" placeholder="Enter password" id="password">
 		</div>
-		<c:if test="${error eq true }">
+		<c:if test="${!empty error  }">
 			<div id="valid" class="alert alert-danger" role="alert">${exception }</div>
 		</c:if>
 	<button id="btn-login" class="btn btn-primary">로그인</button>

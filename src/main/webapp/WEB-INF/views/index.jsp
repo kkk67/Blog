@@ -2,18 +2,62 @@
 	pageEncoding="UTF-8"%>
 
 <%@ include file="layout/header.jsp"%>
+<!-- <script>
+function dateFormat(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
 
-<div class="container">
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
 
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+	var createDate = new Date(${board.createDate});
+	
+	var createDate = dateFormat(createDate);
+	
+	console.log(createDate);
+</script> -->
+
+<div class="container" >
 	<c:forEach var="board" items="${boards.content }">
 		<div class="card m-2">
-			<div class="card-body">
-				<h4 class="card-title">${board.title}</h4>
-				<a href="/board/${board.id}" class="btn btn-primary">상세 보기</a>
+			<div class="card-body card-clickable" data-boardid="${board.id }")>
+				<h3 class="card-title">제목 : ${board.title}</h3>
+				<p>작성자 : ${board.user.username } / 작성 시간 : ${board.createDate }</p>
+				<%-- <a href="/board/${board.id}" class="btn btn-primary">상세 보기</a> --%>
 			</div>
 		</div>
 	</c:forEach>
-	<ul class="pagination  justify-content-center">
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".card-clickable").click(function(){
+			var boardId = $(this).data("boardid");
+			var url = "/board/" + boardId;
+			window.open(url,"_self");
+		});
+		
+		$(".card-clickable").hover(function(){
+			$(this).css("background-color","#007bff");
+		}, function(){
+			$(this).css("background-color","white");
+		});
+	})	;
+</script>
+	<c:choose>
+		<c:when test="${isEmpty eq true }">
+			<br/>
+			<h3>게시글이 존재하지 않습니다.</h3>
+			<br/><br/>
+		</c:when>
+		<c:otherwise>
+			<ul class="pagination  justify-content-center">
 		<c:choose>
 			<c:when test="${boards.first }">
 					<li class="page-item disabled"><a class="page-link"
@@ -46,5 +90,7 @@
 			</c:otherwise>
 		</c:choose>
 	</ul>
+		</c:otherwise>
+	</c:choose>
 </div>
 <%@ include file="layout/footer.jsp"%>

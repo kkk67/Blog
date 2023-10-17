@@ -15,6 +15,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -45,13 +46,17 @@
 						<li class="nav-item"><a class="nav-link"
 							href="/board/saveForm">글쓰기</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="/auth/updateForm">회원정보</a></li>
+							href="/auth/ConfirmForm">회원정보</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="/user/logout">로그아웃</a></li>
 					</ul>
 				</c:otherwise>
 			</c:choose>
 		</div>
+				  <form action="/search" method="GET" class="form-inline justify-content-end " role="search">
+	        			<input type="text" name="keyword" class="form-control" id="keyword" placeholder="검색">
+	       				 <button class="btn btn-success bi bi-search"></button>
+					</form>
 	</nav>
 	<br/>
 </body>

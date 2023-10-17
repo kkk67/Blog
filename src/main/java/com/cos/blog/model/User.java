@@ -12,13 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +32,6 @@ public class User implements Serializable {
 	private int id; // 시퀀스,auto_increment
 	
 	@NotBlank(message = "아이디를 입력해주세요.")
-	@Size(min=3, max=15,message = "아이디는 3자 이상 15자 이하로 입력해주세요.")
 	@Column(nullable = false,length = 100,unique = true)
 	private String username; // 아이디
 	

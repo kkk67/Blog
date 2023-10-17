@@ -2,9 +2,7 @@ package com.cos.blog.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +81,12 @@ public class BoardService {
 		@Transactional
 		public void 댓글삭제하기(int id) {
 			replyRepository.deleteById(id);
+		}
+		
+		@Transactional
+		public Page<Board> 검색하기(String keyword,Pageable pageable){
+			return boardRepository.findByTitleContaining(keyword,pageable);
+//			return boardRepository.findByTitleContainingOrContentContaining(keyword,keyword,pageable);
 		}
 		
 }
