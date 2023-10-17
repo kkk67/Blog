@@ -14,6 +14,7 @@
 			<label for="password" >Password:</label> 
 			<input type="password" class="form-control"   placeholder="Enter password" id="password"  >
 		<button id="validPwd"   type="button"  class="btn btn-secondary" onclick="index.validPwd(${principal.user.id })">비밀번호 확인</button>
+		
 		</div>		
 		
 </div>
