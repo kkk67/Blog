@@ -85,8 +85,8 @@ public class BoardService {
 		
 		@Transactional
 		public Page<Board> 검색하기(String keyword,Pageable pageable){
-			return boardRepository.findByTitleContaining(keyword,pageable);
-//			return boardRepository.findByTitleContainingOrContentContaining(keyword,keyword,pageable);
+			/* return boardRepository.findByTitleContaining(keyword,pageable); */
+			return boardRepository.findByTitleContainingOrContentContaining(keyword,keyword,pageable);
 		}
 		
 }

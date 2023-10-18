@@ -1,5 +1,7 @@
 package com.cos.blog.dto;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,7 @@ public class UpdateUserDto {
 	private int id;
 	private String username;
 	private String password;
-	private String inputEmail;
+	private String email;
 	private String originEmail;
+	private Timestamp createDate;
 }

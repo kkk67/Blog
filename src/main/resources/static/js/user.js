@@ -89,6 +89,7 @@ let index = {
 			username:$("#username").val(),
 			password:$("#password").val(),
 			email:$("#email").val(),
+			originEmail: $("#origin-email").val(),
 		};
 		
 		console.log(data);
@@ -342,6 +343,7 @@ let index = {
 					$("#email").attr("disabled",true);
 					$("#sendNumber").attr("disabled",true);
 					$("#sendNumber").text("인증 완료");
+					$("#btn-update").css("display","inline"); // 수정버튼
 				}
 		},
 		

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.blog.dto.ResponseDto;
+import com.cos.blog.dto.UpdateUserDto;
 import com.cos.blog.dto.ValidPWDto;
 import com.cos.blog.dto.deleteUserDto;
 import com.cos.blog.model.User;
@@ -96,18 +97,47 @@ public class UserApiController {
 	}
 
 	@PutMapping("/user")
-	public ResponseDto<Integer> update(@RequestBody User user) { //회원정보 수정
-				userService.회원수정(user);
+	public ResponseDto<Integer> update(@RequestBody UpdateUserDto updateUserDto) { //회원정보 수정
+		System.out.println(updateUserDto);
+		
+		if(updateUserDto.getOriginEmail().equals(updateUserDto.getEmail())) {
+			User user = User.builder()
+					.id(updateUserDto.getId())
+					.username(updateUserDto.getUsername())
+					.password(updateUserDto.getPassword())
+					.email(updateUserDto.getEmail())
+					.build();
+			System.out.println(user);
+			 userService.회원수정(user); 
+		}
+		else { // 접근주체 이메일과 저장된 이메일이 다를 경우
+			String result = userService.checkEmailDuplication(updateUserDto.getEmail());
+			
+			if(result.equals("이메일이 중복됩니다.")) {
+				throw new IllegalStateException("이메일이 중복됩니다.");
+			}
+			User user = User.builder()
+					.id(updateUserDto.getId())
+					.username(updateUserDto.getUsername())
+					.password(updateUserDto.getPassword())
+					.email(updateUserDto.getEmail())
+					.build();
+			userService.회원수정(user);
+		}
+		
 			
 		// 트랜잭션이 종료되기 때문에 DB 값은 변경이 됐지만
 		// 세션값은 변경이 되지 않아서 수정이 안된거처럼 보임
 		// 세션 등록
 		
+		
 		/*
 		 * Authentication authentication = authenticationManager .authenticate(new
-		 * UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+		 * UsernamePasswordAuthenticationToken(updateUserDto.getUsername(),
+		 * updateUserDto.getPassword()));
 		 * SecurityContextHolder.getContext().setAuthentication(authentication);
 		 */
+		 
 		 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}

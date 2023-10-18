@@ -25,12 +25,12 @@ function dateFormat(date) {
 	console.log(createDate);
 </script> -->
 
-<div class="container" >
+<div class="container"  style="height: auto;">
 	<c:forEach var="board" items="${boards.content }">
 		<div class="card m-2">
 			<div class="card-body card-clickable" data-boardid="${board.id }")>
-				<h3 class="card-title">제목 : ${board.title}</h3>
-				<p>작성자 : ${board.user.username } / 작성 시간 : ${board.createDate }</p>
+				<h3 class="card-title"><b>제목 :</b> <i>${board.title}</i></h3>
+				<p><b>작성자 :</b> <i>${board.user.username } </i> / <i><b>작성 시간 :</b> ${board.createDate }</i></p>
 				<%-- <a href="/board/${board.id}" class="btn btn-primary">상세 보기</a> --%>
 			</div>
 		</div>

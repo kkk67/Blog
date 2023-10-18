@@ -4,8 +4,10 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
-<button id="btn-update"  class="btn btn-primary">수정</button>
+<button id="btn-update"  class="btn btn-primary" style="display: none; ">수정</button>
 	<a href="/auth/deleteForm" class="btn btn-danger">회원탈퇴</a>
+	<br/><br/>
+	
 	<form>
 		<input type="hidden" id ="id" value="${principal.user.id }"/>
 		<div class="form-group">
@@ -18,6 +20,8 @@
 				class="form-control"   placeholder="Enter password" id="password">
 		</div>		
 		<div class="form-group">
+			<input type="hidden"  id="origin-email" value="${principal.user.email }">
+			<input type="hidden"  id="createDate" value="${principal.user.createDate }">
 			<label for="email">Email address:</label> <input type="email"
 				class="form-control"  value=" ${principal.user.email }"  placeholder="Enter email" id="email" >
 			<button id="sendNumber"  type="button" class="btn btn-secondary"  onclick="index.sendMail()">인증번호 전송</button>

@@ -4,12 +4,28 @@
 <div class="container">
 	<c:forEach var="search" items="${search.content }">
 		<div class="card m-2">
-			<div class="card-body">
-				<h4 class="card-title">${search.title}</h4>
-				<a href="/board/${search.id}" class="btn btn-primary">상세 보기</a>
+			<div class="card-body card-clickable" data-searchid="${search.id }">
+				<h3 class="card-title"><b>제목 :</b> <i>${search.title}</i></h3>
+				<p><b>작성자 :</b> <i>${search.user.username }</i> / <b>작성 시간 :</b> <i>${search.createDate }</i></p>
+				<%-- <a href="/board/${search.id}" class="btn btn-primary">상세 보기</a> --%>
 			</div>
 		</div>
 	</c:forEach>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$(".card-clickable").click(function(){
+			var searchid = $(this).data("searchid");
+			var url = "/board/" + searchid;
+			window.open(url,"_self");
+		});
+		
+		$(".card-clickable").hover(function(){
+			$(this).css("background-color","#007bff");
+		}, function(){
+			$(this).css("background-color","white");
+		});
+	})	;
+</script>
 	<!-- 검색 결과가 없으면 -->
 	<c:choose>
 		<c:when test="${isEmpty }">

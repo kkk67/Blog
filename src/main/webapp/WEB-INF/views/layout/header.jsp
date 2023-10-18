@@ -54,9 +54,23 @@
 			</c:choose>
 		</div>
 				  <form action="/search" method="GET" class="form-inline justify-content-end " role="search">
-	        			<input type="text" name="keyword" class="form-control" id="keyword" placeholder="검색">
-	       				 <button class="btn btn-success bi bi-search"></button>
+	        			<input type="search" name="keyword" class="form-control" id="keyword" placeholder="search">
+	       				 <button class="btn btn-outline-success">Search</button>
+						<!-- <button class="btn btn-success bi bi-search"></button> --> <!-- 부트스트랩 아이콘을 이용한 검색버튼 -->
 					</form>
 	</nav>
 	<br/>
+	<%
+		String strReferer = request.getHeader("referer");
+
+	if(strReferer == null){
+	%>
+	<script>
+		alert("URL을 직접 입력해서 접근하셨습니다. \n정상적인 경로를 통해 다시 접근해주세요.");
+		document.location.href="/";
+	</script>
+	<%
+	return;
+	}
+	%>
 </body>
