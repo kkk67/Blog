@@ -79,11 +79,15 @@ public class UserService {
 				return new IllegalArgumentException("회원 찾기 실패");
 			});
 			// validation 체크
-			if(persistance.getOauth() == null || persistance.getOauth().equals("")) {
-				String rawPassword = user.getPassword(); //원문
-				String encPassword = encoder.encode(rawPassword); // 해쉬화
-				persistance.setPassword(encPassword);
-				persistance.setEmail(user.getEmail());	
+			if((persistance.getOauth() == null || persistance.getOauth().equals(""))) {
+				if(user.getPassword() == null) {
+					persistance.setEmail(user.getEmail());	
+				}
+				else {
+					String rawPassword = user.getPassword(); //원문
+					String encPassword = encoder.encode(rawPassword); // 해쉬화
+					persistance.setPassword(encPassword);					
+				}
 			}
 			
 			// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = 커밋 자동

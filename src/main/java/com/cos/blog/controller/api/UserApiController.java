@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.blog.dto.ResponseDto;
+import com.cos.blog.dto.UpdateEmailDto;
 import com.cos.blog.dto.UpdateUserDto;
 import com.cos.blog.dto.ValidPWDto;
 import com.cos.blog.dto.deleteUserDto;
+import com.cos.blog.dto.UpdatePWDto;
 import com.cos.blog.model.User;
 import com.cos.blog.service.EmailService;
 import com.cos.blog.service.UserService;
@@ -96,34 +98,23 @@ public class UserApiController {
 		return result;
 	}
 
-	@PutMapping("/user")
-	public ResponseDto<Integer> update(@RequestBody UpdateUserDto updateUserDto) { //회원정보 수정
-		System.out.println(updateUserDto);
-		
-		if(updateUserDto.getOriginEmail().equals(updateUserDto.getEmail())) {
-			User user = User.builder()
-					.id(updateUserDto.getId())
-					.username(updateUserDto.getUsername())
-					.password(updateUserDto.getPassword())
-					.email(updateUserDto.getEmail())
-					.build();
-			System.out.println(user);
-			 userService.회원수정(user); 
-		}
-		else { // 접근주체 이메일과 저장된 이메일이 다를 경우
-			String result = userService.checkEmailDuplication(updateUserDto.getEmail());
-			
-			if(result.equals("이메일이 중복됩니다.")) {
-				throw new IllegalStateException("이메일이 중복됩니다.");
-			}
-			User user = User.builder()
-					.id(updateUserDto.getId())
-					.username(updateUserDto.getUsername())
-					.password(updateUserDto.getPassword())
-					.email(updateUserDto.getEmail())
-					.build();
-			userService.회원수정(user);
-		}
+	/*
+	 * @PutMapping("/user") public ResponseDto<Integer> update(@RequestBody
+	 * UpdateUserDto updateUserDto) { //회원정보 수정 System.out.println(updateUserDto);
+	 * 
+	 * if(updateUserDto.getOriginEmail().equals(updateUserDto.getEmail())) { User
+	 * user = User.builder() .id(updateUserDto.getId())
+	 * .username(updateUserDto.getUsername()) .password(updateUserDto.getPassword())
+	 * .email(updateUserDto.getEmail()) .build(); System.out.println(user);
+	 * userService.회원수정(user); } else { // 접근주체 이메일과 저장된 이메일이 다를 경우 String result =
+	 * userService.checkEmailDuplication(updateUserDto.getEmail());
+	 * 
+	 * if(result.equals("이메일이 중복됩니다.")) { throw new
+	 * IllegalStateException("이메일이 중복됩니다."); } User user = User.builder()
+	 * .id(updateUserDto.getId()) .username(updateUserDto.getUsername())
+	 * .password(updateUserDto.getPassword()) .email(updateUserDto.getEmail())
+	 * .build(); userService.회원수정(user); }
+	 */
 		
 			
 		// 트랜잭션이 종료되기 때문에 DB 값은 변경이 됐지만
@@ -138,25 +129,84 @@ public class UserApiController {
 		 * SecurityContextHolder.getContext().setAuthentication(authentication);
 		 */
 		 
-		 
+		/*
+		 * return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); }
+		 */
+	
+	@PutMapping("/user/password")
+	public ResponseDto<Integer> updatePassword(@RequestBody UpdatePWDto updatePWDto ){ //세션
+		System.out.println(updatePWDto);
+		User user = userService.회원아이디찾기(updatePWDto.getId());
+		if(updatePWDto.getOriginPassword() == null || updatePWDto.getPassword() == null ) {
+			throw new BadCredentialsException("비밀번호가 입력되지 않았습니다.");
+		}
+		boolean ismatch = encoder.matches(updatePWDto.getOriginPassword(), user.getPassword()); // 현재 비밀번호와 같은가?
+		
+		if(ismatch) { // 현재 비밀번호 이면 수정을 진행함
+			User updateUser =User.builder()
+			.id(user.getId())
+			.username(user.getUsername())
+			.password(updatePWDto.getPassword())
+			.email(user.getEmail())
+			.role(user.getRole())
+			.createDate(user.getCreateDate())
+			.build();
+			userService.회원수정(updateUser);
+		}else {
+			throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+		}
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
-
-	@DeleteMapping("/user/{id}")
-	public ResponseDto<Integer> delete(@RequestBody deleteUserDto deleteUserDto) {
-		User user = userService.회원아이디찾기(deleteUserDto.getUserid());
-		if(deleteUserDto.getPassword().equals("")) {
-			throw new BadCredentialsException("비밀번호를 입력해주세요");
-		}
+	@PutMapping("/user/email")
+	public ResponseDto<Integer> updateEmail(@RequestBody UpdateEmailDto updateEmailDto){
+		User user = userService.회원아이디찾기(updateEmailDto.getId());
+		System.out.println(user);
 		
-		 boolean ismatch = encoder.matches(deleteUserDto.getPassword(), user.getPassword());
+		if(updateEmailDto.getEmail()==null) {
+			throw new IllegalStateException("이메일을 입력해주세요");
+		}
+		String result = userService.checkEmailDuplication(updateEmailDto.getEmail());
+		
+		if(result.equals("이메일이 중복됩니다.")) {
+			throw new IllegalStateException("중복되는 이메일입니다.");
+		}
+		/*
+		 * boolean ismatch =
+		 * encoder.matches(updateEmailDto.getPassword(),user.getPassword());
+		 * 
+		 * if(!ismatch) { throw new BadCredentialsException("비밀번호가 다릅니다."); }
+		 */
+		
+		  User updateUser = User.builder() 
+				  .id(updateEmailDto.getId())
+		  .username(user.getUsername()) 
+		  .password(null)
+		  .email(updateEmailDto.getEmail())
+		  .createDate(user.getCreateDate()) .role(user.getRole()) .build();
 		 
-		 if(ismatch == true) {
-				userService.회원탈퇴(deleteUserDto.getUserid());			 
-		 }
+		
+		 userService.회원수정(updateUser); 
+		
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
+	
+	@DeleteMapping("/user/{id}")
+	public ResponseDto<Integer> delete(@PathVariable int id) {
+		/* User user = userService.회원아이디찾기(id); */
+		/*
+		 * if(deleteUserDto.getPassword().equals("")) { throw new
+		 * BadCredentialsException("비밀번호를 입력해주세요"); }
+		 * 
+		 * boolean ismatch = encoder.matches(deleteUserDto.getPassword(),
+		 * user.getPassword());
+		 */
+		 
+		/* if(ismatch == true) { */
+				userService.회원탈퇴(id);			 
+	/*	 }
 		 else {
 			 throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
-		 }
+		 }*/
 		 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}

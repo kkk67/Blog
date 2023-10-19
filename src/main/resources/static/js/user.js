@@ -4,11 +4,14 @@ let index = {
 		$("#btn-save").on("click",()=>{ // function(){} 대신 ()=>{} this를 바인딩하기 위해서 
 			this.save();
 		});
-		$("#btn-update").on("click",()=>{ // function(){} 대신 ()=>{} this를 바인딩하기 위해서 
-			this.update();
+		$("#password-btn").on("click",()=>{ // function(){} 대신 ()=>{} this를 바인딩하기 위해서 
+			this.updatePassword();
 		});
 		$("#check-username").on("click",()=>{
 			this.validUsername();
+		});
+		$("#Email-btn").on("click",()=>{
+			this.updateEmail();
 		})
 	},
 	
@@ -18,7 +21,7 @@ let index = {
 		let data = {
 			username:$("#username").val(),
 			password:$("#password").val(),
-			email:$("#email").val()
+			email:$("#newEmail").val()
 		};
 		
 		/*console.log(data);*/
@@ -39,7 +42,7 @@ let index = {
 		
 		if(!data.email){
 			alert("이메일을 입력하세요")
-			document.getElementById('email').focus();
+			document.getElementById('newEmail').focus();
 			return;
 		}
 			if(data.username.length<3 || data.username.length > 16){
@@ -60,7 +63,12 @@ let index = {
 				document.getElementById('email').focus();
 				return;
 			}
-		
+			if($("#numberCheck").val() == 0){
+			$("#resultValid").text("");
+			$("#resultValid").text("이메일 인증을 해주세요");
+			$("#resultValid").css("color","red");
+			return;
+		}
 		this.validUsername();
 		this.validEmail();
 		
@@ -81,8 +89,8 @@ let index = {
 		
 	},
 	
-	update: function() {
-	/*	alert("user의 save함수 호출됨");*/
+/*	update: function() {
+		alert("user의 save함수 호출됨");
 	
 		let data = {
 			id:$("#id").val(),
@@ -94,18 +102,12 @@ let index = {
 		
 		console.log(data);
 		
-		
 		if(!data.password){
 			alert("비밀번호를 입력하세요")
 			document.getElementById('password').focus();
 			return;
 		}
 		
-		if(!data.email){
-			alert("이메일을 입력하세요")
-			document.getElementById('email').focus();
-			return;
-		}
 		if(data.password.length<3 || data.password.length > 20){
 					alert("비밀번호는 최소 4자리 이상 20자리 이하로 작성해야 합니다.");
 					document.getElementById('password').value='';
@@ -116,7 +118,7 @@ let index = {
 				alert("이메일 형식이 아닙니다.");
 				document.getElementById('email').focus();
 				return;
-			}
+			} 
 			
 		this.validEmail();
 		
@@ -135,25 +137,116 @@ let index = {
 				alert(JSON.stringify(error.responseText));
 			}); 			
 		}
-	},
-	delete: function(userid) {
+	},*/
+	updatePassword:function(){
 		let data={
-			userid: userid,
-			password: $("#password").val()
+			id: $("#userid").val(),
+			originPassword: $("#origin-password").val(),
+			password: $("#password").val(),
+		}
+		var rePassword = $("#rePassword").val();
+		console.log(data);
+		
+		if(!data.originPassword){
+			alert("현재 비밀번호를 입력해주세요");
+			document.getElementById("origin-password").focus();
+			return;
 		}
 		if(!data.password){
-			alert("비밀번호를 입력해주세요");
+			alert("새 비밀번호를 입력해주세요");
 			document.getElementById("password").focus();
 			return;
 		}
+		if(!rePassword){
+			alert("새 비밀번호 확인을 입력해주세요");
+			document.getElementById("rePassword").focus();
+			return;
+		}
+		if(data.password.length<4 || data.password.length > 20){
+					alert("비밀번호는 최소 4자리 이상 20자리 이하로 작성해야 합니다.");
+					document.getElementById('password').value='';
+					document.getElementById('password').focus();
+					return;
+			}
+			if(data.password != rePassword){
+				alert("새 비밀번호가 일치하지 않습니다.");
+				return;
+			}
+
+		$.ajax({
+			type: "PUT",
+			url: "/user/password", 
+			data: JSON.stringify(data), 
+			contentType: "application/json; charset=utf-8", 
+			dataType: "json" 
+		}).done(function(resp){
+			alert("비밀번호 수정이 완료되었습니다.");
+			console.log(resp);
+			location.href="/user/logout";
+		}).fail(function(error){ 
+			alert(JSON.stringify(error.responseText));
+		}); 
+	},
+	
+	updateEmail: function(){
+		let data={
+			id: $("#userid").val(),
+			/*password: $("#emailPassword").val(),*/
+			email: $("#newEmail").val()
+		}
+	/*	if(!data.password){
+			$("#resultValid").text("");
+			$("#resultValid").text("비밀번호를 입력 해주세요");
+			$("#resultValid").css("color","red");
+			return;
+		}*/
+		if(!data.email){
+			$("#resultValid").text("");
+			$("#resultValid").text("이메일을 입력해주세요");
+			$("#resultValid").css("color","red");
+			return;
+		}
+			if($("#numberCheck").val() == 0){
+			$("#resultValid").text("");
+			$("#resultValid").text("이메일 인증을 해주세요");
+			$("#resultValid").css("color","red");
+			return;
+		}
+		$("#resultValid").text("");
+		$.ajax({
+			type: "PUT",
+			url: "/user/email", 
+			data: JSON.stringify(data), 
+			contentType: "application/json; charset=utf-8", 
+			dataType: "json" 
+		}).done(function(resp){
+			alert("이메일 수정이 완료되었습니다.");
+			console.log(resp);
+			location.href="/user/logout";
+		}).fail(function(error){ 
+			alert(JSON.stringify(error.responseText));
+		}); 
+		
+	},
+	
+	delete: function(userid) {
+		let data={
+			userid: userid,
+		/*	password: $("#password").val()*/
+		}
+/*		if(!data.password){
+			alert("비밀번호를 입력해주세요");
+			document.getElementById("password").focus();
+			return;
+		}*/
 		
 			if(confirm("탈퇴하시겠습니까?")){
 				$.ajax({
 				type: "DELETE",
 				url: `/user/${userid}`,
-				data: JSON.stringify(data),
+/*				data: JSON.stringify(data),
 				contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지 (MIME)
-				dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면) => javascript 오브젝트로 변경
+				dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면) => javascript 오브젝트로 변경*/
 			}).done(function(resp){ // 성공
 				alert("회원탈퇴가 완료되었습니다.");
 				console.log(resp);
@@ -269,9 +362,9 @@ let index = {
 	
 	
 	sendMail: function(checknum){ // 이메일 중복 확인 및 이메일 인증번호 전송 js
-		
+		$("#resultValid").text("");
 		let data={
-			mail: $("#email").val(),
+			mail: $("#newEmail").val(),
 		}
 	checknum = checknum + 0;
 	if(!data.mail){
@@ -299,32 +392,31 @@ let index = {
 							url:"/mail",
 							type:"post",
 							dataType:"json",
-							data:JSON.stringify($("#email").val()),
+							data:JSON.stringify($("#newEmail").val()),
 							contentType: "application/json; charset=utf-8",
 						}).done(function(resp){
 							alert("인증번호 발송");
 							console.log(resp);
 							$("#Confirm").val(resp);
-							index.confirmOnkey();
+							/*index.confirmOnkey();*/
 						}).fail(function(error){
 							alert(JSON.stringify(error.responseText));
 					});
 				}
 			}
-			else{
-					$("#sendNumber").text("인증번호 전송");
+			else{ // 수정
 				$("#mail_number").css("display","block");
 					$.ajax({
 						url:"/mail",
 						type:"post",
 						dataType:"json",
-						data:JSON.stringify($("#email").val()),
+						data:JSON.stringify($("#newEmail").val()),
 						contentType: "application/json; charset=utf-8",
 					}).done(function(resp){
 						alert("인증번호 발송");
 						console.log(resp);
 						$("#Confirm").val(resp);
-						index.confirmOnkey();
+						/*index.confirmOnkey();*/
 					}).fail(function(error){
 						alert(JSON.stringify(error.responseText));
 				});
@@ -333,7 +425,9 @@ let index = {
 	confirmNumber: function(){ // 이메일 인증코드 확인 js
 				var number1 = $("#number").val();
 				var number2 = $("#Confirm").val();
-		
+				
+				console.log(number1);
+				console.log(number2);
 				if(number1 != number2){
 					alert("인증번호가 잘못되었습니다.");
 				}
@@ -344,10 +438,11 @@ let index = {
 					$("#sendNumber").attr("disabled",true);
 					$("#sendNumber").text("인증 완료");
 					$("#btn-update").css("display","inline"); // 수정버튼
+					$("#numberCheck").val("1");
 				}
 		},
 		
-	confirmOnkey:function(){ // 키를 입력 시 마다 검사하는 js
+/*	confirmOnkey:function(){ // 키를 입력 시 마다 검사하는 js
 			var number1 = $("#number").val();
 				var number2 = $("#Confirm").val();
 		
@@ -368,6 +463,6 @@ let index = {
 					$("#emconfirmchk").css("font-size" ,"20px");
 				}
 			})
-	}
+	}*/
 	}
 index.init();

@@ -27,6 +27,11 @@ import lombok.NoArgsConstructor;
 @Entity
 // @DynamicInsert   insert시에 null인 필드를 빼줌
 public class User implements Serializable {
+	public User(int id2, String email2,int num) {
+		this.id = id2;
+		this.email = email2;
+	}
+
 	@Id // primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; // 시퀀스,auto_increment
@@ -50,6 +55,7 @@ public class User implements Serializable {
 	private RoleType role; // Enum을 쓰는게 좋다. admin,user,manager String이 아니라 셋 중 하나만 넣을 수 있음 (오류방지)
 	
 	private String oauth; // 카카오,구글 
+	
 	
 	@CreationTimestamp // 시간이 자동 입력
 	private Timestamp createDate;

@@ -19,4 +19,3 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	boolean existsByUser(User user);
 	List<Board> findByUser(User user);
 }
-
