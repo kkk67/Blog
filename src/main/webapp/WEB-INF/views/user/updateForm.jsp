@@ -9,35 +9,22 @@
 	<br/><br/> --%>
 	
 	<form style="width:800px;">
-		<input type="hidden" id ="id" value="${principal.user.id }"/>
+		<input type="hidden" id ="id" value="${userInfo.id }"/>
 		<div class="form-group">
 			<label for="username">Username</label> <input type="text"
-				class="form-control"  value=" ${principal.user.username }" placeholder="Enter Username" id="username" readonly>
+				class="form-control"  value=" ${userInfo.username }" placeholder="Enter Username" id="username" readonly>
 		</div>
-		<c:if test="${empty principal.user.oauth }">
+		<c:if test="${empty userInfo.oauth }">
 		<div class="form-group">
 			<label for="password">비밀번호</label> 
 			<!-- <input type="password" class="form-control"   placeholder="Enter password" id="password"> -->
 				<a class="btn btn-secondary" data-toggle="modal" data-target="#PasswordModal" style="float: right;" >수정</a>
 		</div>		
 		<div class="form-group">
-			<input type="hidden"  id="origin-email" value="${principal.user.email }">
+			<input type="hidden"  id="origin-email" value="${userInfo.email }">
 			<label for="email">이메일</label>
-			<h3>${principal.user.email }</h3>
+			<h3>${userInfo.email }</h3>
 			<a class="btn btn-secondary" data-toggle="modal" data-target="#EmailModal" style="float: right;" onclick="disabledFoam()">수정</a>
-			<%-- <input type="email" class="form-control"  value=""  placeholder="${principal.user.email }" id="email" > --%>
-				<!-- 이메일 인증 -->
-		<!-- 	<button id="sendNumber"  type="button" class="btn btn-secondary"  onclick="index.sendMail()">인증번호 전송</button> -->
-			<!-- <input type="hidden" id="hidden-text"> -->
-		<!-- 	<input type="text" id="Confirm" name="Confirm" style="display: none" value="">
-			<div class="form-group last mb-4 check_input" id="mail_number"   style="display: none" >
-			<br/>
-				<label for="number" id="confirmTxt">인증번호를 입력해주세요</label>
-				<div>
-					<input type="text" name="number" id="number" style="width:250px; margin-top: -10px">
-					<button id="confirmBtn" type="button" class="btn btn-primary" onclick="index.confirmNumber(0)">이메일 인증</button>			
-				</div>
-			</div> -->
 		</div>
 			<!--비밀번호 모달 -->
 			<div class="modal fade" id="PasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,19 +46,17 @@
 	   <!-- 이메일 모달 끝 -->
 		</c:if>
 
-		<c:if test="${not empty principal.user.oauth }">
+		<c:if test="${not empty userInfo.oauth }">
 		<div class="form-group">
 			<label for="password">Password:</label> <input type="password"
 				class="form-control"   placeholder="" id="password" readonly>
 		</div>		
 		<div class="form-group">
 			<label for="email">Email address:</label> <input type="email"
-				class="form-control"  value=" ${principal.user.email }"  placeholder="Enter email" id="email" readonly>
+				class="form-control"  value=" ${userInfo.email }"  placeholder="Enter email" id="email" readonly>
 		</div>
-
 		</c:if>
 	</form>
-			
 <!-- 			<span id="emailResult"></span> 	 -->
 </div>
 <script type="text/javascript">
@@ -82,3 +67,16 @@ function disabledFoam(){
 </script>
 <script src ="/js/user.js"></script>
 <%@ include file="../layout/footer.jsp"%>
+			<%-- <input type="email" class="form-control"  value=""  placeholder="${principal.user.email }" id="email" > --%>
+				<!-- 이메일 인증 -->
+		<!-- 	<button id="sendNumber"  type="button" class="btn btn-secondary"  onclick="index.sendMail()">인증번호 전송</button> -->
+			<!-- <input type="hidden" id="hidden-text"> -->
+		<!-- 	<input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+			<div class="form-group last mb-4 check_input" id="mail_number"   style="display: none" >
+			<br/>
+				<label for="number" id="confirmTxt">인증번호를 입력해주세요</label>
+				<div>
+					<input type="text" name="number" id="number" style="width:250px; margin-top: -10px">
+					<button id="confirmBtn" type="button" class="btn btn-primary" onclick="index.confirmNumber(0)">이메일 인증</button>			
+				</div>
+			</div> -->

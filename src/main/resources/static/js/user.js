@@ -139,15 +139,40 @@ let index = {
 		}
 	},*/
 	updatePassword:function(){
-		let data={
+		
+		var isAdmin = $("#isAdmin").val();
+		var rePassword = $("#rePassword").val();
+		
+		
+		if(isAdmin == 1){ // 어드민이면
+			let data={
+				id: $("#userid").val(),
+				originPassword: '1',
+				password: $("#password").val(),
+			}
+			console.log(data);
+				$.ajax({
+				type: "PUT",
+				url: "/user/password", 
+				data: JSON.stringify(data), 
+				contentType: "application/json; charset=utf-8", 
+				dataType: "json" 
+			}).done(function(resp){
+				alert("비밀번호 수정이 완료되었습니다.");
+				console.log(resp);
+				location.href="/user/logout";
+			}).fail(function(error){ 
+				alert(JSON.stringify(error.responseText));
+			}); 
+		}else{
+			let data={
 			id: $("#userid").val(),
 			originPassword: $("#origin-password").val(),
 			password: $("#password").val(),
 		}
-		var rePassword = $("#rePassword").val();
 		console.log(data);
-		
-		if(!data.originPassword){
+			
+			if(!data.originPassword){
 			alert("현재 비밀번호를 입력해주세요");
 			document.getElementById("origin-password").focus();
 			return;
@@ -186,6 +211,9 @@ let index = {
 		}).fail(function(error){ 
 			alert(JSON.stringify(error.responseText));
 		}); 
+		}
+		
+		
 	},
 	
 	updateEmail: function(){
@@ -287,7 +315,7 @@ let index = {
 				/*alert("비밀번호가 일치합니다.");*/
 				$("#validPwd").attr("disabled",true);
 				$("#password").attr("disabled",true);
-				location.href="/auth/updateForm";
+				location.href="/auth/updateForm/"+ data.userid;
 				return true;
 			}
 			else{

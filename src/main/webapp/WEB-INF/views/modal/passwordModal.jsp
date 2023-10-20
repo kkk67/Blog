@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,23 +14,31 @@
 	            <span aria-hidden="true">x</span>
 	          </button>
 	        </div>
-	        
-	        <div class="modal-body">
-				<form action="#">
-					<input type="hidden" id="userid" value="${principal.user.id}">
-					  <div class="form-group">
-					    <input type="password" class="form-control" placeholder="현재 비밀번호" id="origin-password">
-					  </div>
-					  <div class="form-group">
-					    <input type="password" class="form-control" placeholder="새 비밀번호" id="password"  onkeyup="checkPassword()">
-					  </div>
-					  		  <div class="form-group">
-					    <input type="password" class="form-control" placeholder="새 비밀번호 확인" id="rePassword" onkeyup="checkPassword()">
-					    <span id="result"></span>
-					  </div>
-				</form>
-	        </div>
-	        
+	        	<div class="modal-body">
+						<form action="#">
+							<input type="hidden" id="userid" value="${userInfo.id}">
+							     
+	        <c:choose>
+	        	<c:when test="${principal.user.role eq 'ADMIN' }">
+			        <input type="hidden" id="isAdmin" value="1">
+	        	</c:when>
+	        	
+	        	<c:otherwise>
+					<input type="hidden" id="isAdmin" value="0">
+					<div class="form-group">
+							    <input type="password" class="form-control" placeholder="현재 비밀번호" id="origin-password"  >
+					</div>
+	        	</c:otherwise>
+	        </c:choose>
+	        				<div class="form-group">
+							    <input type="password" class="form-control" placeholder="새 비밀번호" id="password"  onkeyup="checkPassword()">
+							  </div>
+							  		  <div class="form-group">
+							    <input type="password" class="form-control" placeholder="새 비밀번호 확인" id="rePassword" onkeyup="checkPassword()">
+							    <span id="result"></span>
+							  </div>
+						</form>
+			        </div>
 	        <div class="modal-footer">
 	        <button class="btn btn-primary" type="button"  id="password-btn" >수정</button>
 	          <button class="btn btn-danger" type="button" data-dismiss="modal">취소</button>

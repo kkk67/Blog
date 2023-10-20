@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,23 +23,30 @@
 					  <div class="form-group">
 					  <input type="hidden" id="userid" value="${principal.user.id}">
 					    <input type="email" class="form-control" placeholder="현재 이메일" id="inputEmail" >
-					    <button id="validEmail"  role="button" type="button" class="form-control btn btn-secondary"  onclick="checkMail('${principal.user.email}') ">확인</button>
+					    <button id="validEmail"  role="button" type="button" class="form-control btn btn-secondary"  onclick="checkMail('${userInfo.email}') ">확인</button>
 					  </div>
 					  <div class="form-group">
 					    <input type="email" class="form-control" placeholder="새로운 이메일" id="newEmail">
-					    <button id="sendNumber"  type="button" class="form-control btn btn-secondary"  onclick="index.sendMail()">인증번호 전송</button>
-					    <input type="hidden" id="hidden-text">
-					    <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
-					    	<div class="form-group last mb-4 check_input" id="mail_number"   style="display: none" >
-						<br/>
-						<label for="number" id="confirmTxt">인증번호를 입력해주세요</label>
-							<div>
-								<input type="text" name="number" id="number" style="width:250px; margin-top: -10px">
-								<button id="confirmBtn" type="button" class="btn btn-primary" onclick="index.confirmNumber(0)">이메일 인증</button>			
-							</div>
-						</div> 
+					    <c:choose>
+					    	<c:when test="${principal.user.role eq 'ADMIN' }">
+					    	<input type="hidden"  id="numberCheck" value="1">
+					    	</c:when>
+					    	<c:otherwise>
+							    <button id="sendNumber"  type="button" class="form-control btn btn-secondary"  onclick="index.sendMail()">인증번호 전송</button>
+							    <input type="hidden" id="hidden-text">
+							    <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+							    	<div class="form-group last mb-4 check_input" id="mail_number"   style="display: none" >
+								<br/>
+								<label for="number" id="confirmTxt">인증번호를 입력해주세요</label>
+									<div>
+										<input type="text" name="number" id="number" style="width:250px; margin-top: -10px">
+										<button id="confirmBtn" type="button" class="btn btn-primary" onclick="index.confirmNumber(0)">이메일 인증</button>			
+									</div>
+								</div> 
+								<input type="hidden"  id="numberCheck" value="0">
+					    	</c:otherwise>
+					    </c:choose>
 						<span id="resultValid"></span>
-						<input type="hidden"  id="numberCheck" value="0">
 					  </div>
 				</form>
 	        </div>

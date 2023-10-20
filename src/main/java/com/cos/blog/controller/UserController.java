@@ -3,6 +3,10 @@ package com.cos.blog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.util.ReflectionUtils.DescribedFieldFilter;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,10 +53,18 @@ public class UserController {
 		return "user/joinForm";
 	}
 	
-	@GetMapping("/auth/updateForm")
-	public String updateForm() {
+	/*
+	 * @GetMapping("/auth/updateForm") public String updateForm() { return
+	 * "user/updateForm"; }
+	 */
+	
+	@GetMapping("/auth/updateForm/{id}")
+	public String updateForm(@PathVariable int id,Model model) {
+		model.addAttribute("userInfo", userService.회원아이디찾기(id));
+		System.out.println("아이디 결과: "+userService.회원아이디찾기(id));
 		return "user/updateForm";
 	}
+	
 	@GetMapping("/auth/loginForm")
 	public String login(@RequestParam(value="error",required = false)String error,@RequestParam(value="exception",required = false)String exception,Model model) {
 		model.addAttribute("error", error);
@@ -67,6 +80,15 @@ public class UserController {
 	@GetMapping("/auth/ConfirmForm")
 	public String Confirm() {
 		return "user/ConfirmForm";
+	}
+	
+	@GetMapping("/auth/users")
+	public String users(Model model,@PageableDefault(size = 10,sort = "id",direction = Direction.DESC )Pageable pageable) {
+		model.addAttribute("users", userService.회원목록(pageable));
+		model.addAttribute("Total", userService.회원목록(pageable).getTotalPages());
+		model.addAttribute("isEmpty", userService.회원목록(pageable).isEmpty());
+		System.out.println(userService.회원목록(pageable));
+		return "user/userList";
 	}
 	
 	@GetMapping("/auth/kakao/callback") // 인가코드를 code에 받아서 매핑됨

@@ -28,9 +28,34 @@ function dateFormat(date) {
 <div class="container"  style="height: auto;">
 	<c:forEach var="board" items="${boards.content }">
 		<div class="card m-2">
+			 <span id = "id"  style="display:none;"><i>${board.id} </i></span>
 			<div class="card-body card-clickable" data-boardid="${board.id }")>
 				<h3 class="card-title"><b>제목 :</b> <i>${board.title}</i></h3>
 				<p><b>작성자 :</b> <i>${board.user.username } </i> / <i><b>작성 시간 :</b> ${board.createDate }</i></p>
+				
+				<c:choose>
+					<c:when test="${board.user.id == principal.user.id}">
+						<p>	
+					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+					</p>
+					</c:when>
+					<c:when test="${principal.user.role eq 'ADMIN'}">
+						<p>	
+					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+					</p>
+					</c:when>
+				</c:choose>
+					<%-- <p>	<c:if test = "${board.user.id == principal.user.id}"> 
+					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+					</c:if></p> --%>
+					
+			<%-- 		<p>	<c:if test = "${principal.user.role eq 'ADMIN'} "> 
+					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+					</c:if></p> --%>
 				<%-- <a href="/board/${board.id}" class="btn btn-primary">상세 보기</a> --%>
 			</div>
 		</div>
@@ -93,4 +118,5 @@ function dateFormat(date) {
 		</c:otherwise>
 	</c:choose>
 </div>
+<script src ="/js/board.js"></script>
 <%@ include file="layout/footer.jsp"%>

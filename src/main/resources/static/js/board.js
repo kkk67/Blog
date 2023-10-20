@@ -40,12 +40,12 @@ let index = {
 	
 	deleteById: function() {
 		let id = $("#id").text();
+		console.log(id);
 		
 		if(confirm("삭제하시겠습니까?")){
 			$.ajax({
 				type: "DELETE",
 				url: "/api/board/"+id, 
-				dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면) => javascript 오브젝트로 변경
 			}).done(function(resp){ // 성공
 				alert("삭제가 완료되었습니다.");
 				console.log(resp);

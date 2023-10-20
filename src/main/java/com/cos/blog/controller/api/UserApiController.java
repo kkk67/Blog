@@ -1,4 +1,4 @@
-package com.cos.blog.controller.api;
+ package com.cos.blog.controller.api;
 
 import javax.validation.Valid;
 
@@ -140,21 +140,35 @@ public class UserApiController {
 		if(updatePWDto.getOriginPassword() == null || updatePWDto.getPassword() == null ) {
 			throw new BadCredentialsException("비밀번호가 입력되지 않았습니다.");
 		}
-		boolean ismatch = encoder.matches(updatePWDto.getOriginPassword(), user.getPassword()); // 현재 비밀번호와 같은가?
-		
-		if(ismatch) { // 현재 비밀번호 이면 수정을 진행함
+		if(updatePWDto.getOriginPassword().equals("1")) {
 			User updateUser =User.builder()
-			.id(user.getId())
-			.username(user.getUsername())
-			.password(updatePWDto.getPassword())
-			.email(user.getEmail())
-			.role(user.getRole())
-			.createDate(user.getCreateDate())
-			.build();
-			userService.회원수정(updateUser);
-		}else {
-			throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+					.id(user.getId())
+					.username(user.getUsername())
+					.password(updatePWDto.getPassword())
+					.email(user.getEmail())
+					.role(user.getRole())
+					.createDate(user.getCreateDate())
+					.build();
+					userService.회원수정(updateUser);
 		}
+		else {
+			boolean ismatch = encoder.matches(updatePWDto.getOriginPassword(), user.getPassword()); // 현재 비밀번호와 같은가?
+			
+			if(ismatch) { // 현재 비밀번호 이면 수정을 진행함
+				User updateUser =User.builder()
+						.id(user.getId())
+						.username(user.getUsername())
+						.password(updatePWDto.getPassword())
+						.email(user.getEmail())
+						.role(user.getRole())
+						.createDate(user.getCreateDate())
+						.build();
+				userService.회원수정(updateUser);
+			}else {
+				throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
+			}			
+		}
+		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	@PutMapping("/user/email")

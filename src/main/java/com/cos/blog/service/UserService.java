@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,6 +141,11 @@ public class UserService {
 			}else {
 				return "사용가능한 이메일입니다..";
 			}
+		}
+		
+		@Transactional(readOnly = true)
+		public Page<User>회원목록(Pageable pageable){
+			return userRepository.findAll(pageable);
 		}
 		
 		/*
