@@ -21,14 +21,14 @@
 					    <input type="password" class="form-control" placeholder="현재 비밀번호" id="emailPassword" >
 					  </div> -->
 					  <div class="form-group">
-					  <input type="hidden" id="userid" value="${principal.user.id}">
+					  <input type="hidden" id="userid" value="${principal.member.id}">
 					    <input type="email" class="form-control" placeholder="현재 이메일" id="inputEmail" >
 					    <button id="validEmail"  role="button" type="button" class="form-control btn btn-secondary"  onclick="checkMail('${userInfo.email}') ">확인</button>
 					  </div>
 					  <div class="form-group">
 					    <input type="email" class="form-control" placeholder="새로운 이메일" id="newEmail">
 					    <c:choose>
-					    	<c:when test="${principal.user.role eq 'ADMIN' }">
+					    	<c:when test="${principal.member.role eq 'ADMIN' }">
 					    	<input type="hidden"  id="numberCheck" value="1">
 					    	</c:when>
 					    	<c:otherwise>

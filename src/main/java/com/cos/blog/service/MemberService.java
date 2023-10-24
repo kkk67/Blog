@@ -15,18 +15,18 @@ import com.cos.blog.dto.UpdateUserDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
 import com.cos.blog.model.RoleType;
-import com.cos.blog.model.User;
+import com.cos.blog.model.Member;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
-import com.cos.blog.repository.UserRepository;
+import com.cos.blog.repository.MemberRepository;
 
 //서비스는 하나의 트랜잭션(작업 단위)면 상관이 없지만 두 개 이상의 트랜잭션을 한번에 수행하기 위하여 사용한다.
 //스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌. IoC를 해준다.
 @Service
-public class UserService {
+public class MemberService {
 
 		@Autowired
-		private UserRepository userRepository;
+		private MemberRepository userRepository;
 		
 		@Autowired
 		private BoardRepository boardRepository;
@@ -38,7 +38,7 @@ public class UserService {
 		private BCryptPasswordEncoder encoder;
 		
 		@Transactional(readOnly = true)
-		public Page<User> 회원관리(String keyword,String type,Pageable pageable){
+		public Page<Member> 회원관리(String keyword,String type,Pageable pageable){
 			if(type.equals("ID")) {
 				/* int intKeyword = Integer.parseInt(keyword); */
 				return userRepository.findByIdContaining(keyword, pageable);
@@ -57,16 +57,16 @@ public class UserService {
 		
 		
 		@Transactional(readOnly = true)
-		public User 회원이름찾기(String username) {
-			User user = userRepository.findByUsername(username).orElseGet(()->{
-				return new User();
+		public Member 회원이름찾기(String username) {
+			Member user = userRepository.findByUsername(username).orElseGet(()->{
+				return new Member();
 			});
 			
 			return user;
 		}
 		
 		@Transactional(readOnly = true)
-		public User 회원아이디찾기(int id) {
+		public Member 회원아이디찾기(int id) {
 			System.out.println("받은 id 값: " + id);
 			return userRepository.findById(id).orElseThrow(()->{
 				return new  IllegalArgumentException("회원 찾기 실패");
@@ -74,7 +74,7 @@ public class UserService {
 		}
 		
 		@Transactional
-		public int 회원가입(User user) {
+		public int 회원가입(Member user) {
 			try {
 				String rawPassword = user.getPassword(); //원문
 				String encPassword = encoder.encode(rawPassword); // 해쉬화
@@ -92,10 +92,10 @@ public class UserService {
 		
 		
 		@Transactional
-		public void 회원수정(User user) {
+		public void 회원수정(Member user) {
 			//수정시에는 영속성 컨텍스트 user 오브젝트를 영속화 시키고 영속화된 user 오브젝트를 수정
 			// select를 해서 오브젝트를 가져오는 이유는 영속화를 하기위해서
-			User persistance = userRepository.findById(user.getId()).orElseThrow(()->{
+			Member persistance = userRepository.findById(user.getId()).orElseThrow(()->{
 				return new IllegalArgumentException("회원 찾기 실패");
 			});
 			// validation 체크
@@ -115,10 +115,10 @@ public class UserService {
 		
 		@Transactional
 		public void 회원탈퇴(int id) {	
-			Optional<User> userEntity = userRepository.findById(id);
+			Optional<Member> userEntity = userRepository.findById(id);
 			
-			if(boardRepository.existsByUser(userEntity.get())) { // 회원이 작성한 게시글이 있으면
-				List<Board> boardEntity = boardRepository.findByUser(userEntity.get()); 
+			if(boardRepository.existsByMember(userEntity.get())) { // 회원이 작성한 게시글이 있으면
+				List<Board> boardEntity = boardRepository.findByMember(userEntity.get()); 
 				for(int i=0; i<boardEntity.size(); i++) { // 게시글 만큼
 					if(replyRepository.existsByBoardId(boardEntity.get(i).getId())) { // 게시글 안에 댓글이 있으면(본인과 다른사람의 댓글)
 						replyRepository.deleteByBoardId(boardEntity.get(i).getId()); // 댓글 삭제
@@ -126,8 +126,8 @@ public class UserService {
 					boardRepository.deleteById(boardEntity.get(i).getId()); // 게시글 삭제
 				}
 			}
-			if(replyRepository.existsByUser(userEntity.get())) { // 회원이 작성한 댓글이 있다면
-				List<Reply> ReplyList = replyRepository.findByUser(userEntity.get()); 
+			if(replyRepository.existsByMember(userEntity.get())) { // 회원이 작성한 댓글이 있다면
+				List<Reply> ReplyList = replyRepository.findByMember(userEntity.get()); 
 				
 				for(int i=0; i<ReplyList.size(); i++) { 
 					replyRepository.deleteById(ReplyList.get(i).getId()); // 댓글 삭제
@@ -162,7 +162,7 @@ public class UserService {
 		}
 		
 		@Transactional(readOnly = true)
-		public Page<User>회원목록(Pageable pageable){
+		public Page<Member>회원목록(Pageable pageable){
 			return userRepository.findAll(pageable);
 		}
 		

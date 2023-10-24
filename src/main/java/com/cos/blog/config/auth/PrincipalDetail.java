@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cos.blog.model.User;
+import com.cos.blog.model.Member;
 
 import lombok.Data;
 import lombok.Getter;
@@ -16,20 +16,20 @@ import lombok.Getter;
 @Data
 public class PrincipalDetail implements UserDetails {
 	
-	private User user; // 콤포지션
+	private Member member; // 콤포지션
 
-	public PrincipalDetail(User user) {
-		this.user = user;
+	public PrincipalDetail(Member member) {
+		this.member = member;
 	}
 
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return member.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return user.getUsername();
+		return member.getUsername();
 	}
 
 	// 계정이 만료되지 않았는지 리턴 ( true: 만료 안됨)
@@ -58,7 +58,7 @@ public class PrincipalDetail implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
 		Collection<GrantedAuthority> collectors = new ArrayList<>();
-		collectors.add(()->{return "ROLE_"+user.getRole();});
+		collectors.add(()->{return "ROLE_"+member.getRole();});
 		
 		return collectors;
 	} 

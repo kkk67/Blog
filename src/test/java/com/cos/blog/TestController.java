@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.model.Board;
-import com.cos.blog.model.User;
+import com.cos.blog.model.Member;
 import com.cos.blog.repository.BoardRepository;
 
 @SpringBootTest

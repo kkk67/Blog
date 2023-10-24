@@ -51,7 +51,7 @@
 							href="/auth/joinForm">회원가입</a></li>
 					</ul>
 				</c:when>
-				<c:when test="${principal.user.role eq 'ADMIN'}">
+				<c:when test="${principal.member.role eq 'ADMIN'}">
 						<ul class="navbar-nav">
 						<li class="nav-item"><a class="nav-link"
 							href="/board/saveForm">글쓰기</a></li>

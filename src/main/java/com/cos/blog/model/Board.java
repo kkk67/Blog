@@ -13,6 +13,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="board")
 public class Board {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +53,6 @@ public class Board {
 	private Timestamp createDate;
 	
 	@ManyToOne(fetch = FetchType.EAGER) // Many = board,  One= User 한명의 유저는 여러개의 게시글을 작성 가능
-	@JoinColumn(name="userid")
-	private User user;  //DB는 오브젝트를 지정할 수 없다. FK , 자바는 오브젝트 저장 가능
+	@JoinColumn(name="memberid")
+	private Member member;  //DB는 오브젝트를 지정할 수 없다. FK , 자바는 오브젝트 저장 가능
 }

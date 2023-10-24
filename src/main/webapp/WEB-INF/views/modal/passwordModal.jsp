@@ -19,7 +19,7 @@
 							<input type="hidden" id="userid" value="${userInfo.id}">
 							     
 	        <c:choose>
-	        	<c:when test="${principal.user.role eq 'ADMIN' }">
+	        	<c:when test="${principal.member.role eq 'ADMIN' }">
 			        <input type="hidden" id="isAdmin" value="1">
 	        	</c:when>
 	        	

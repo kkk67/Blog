@@ -27,15 +27,15 @@ import com.cos.blog.dto.UpdateUserDto;
 import com.cos.blog.dto.ValidPWDto;
 import com.cos.blog.dto.deleteUserDto;
 import com.cos.blog.dto.UpdatePWDto;
-import com.cos.blog.model.User;
+import com.cos.blog.model.Member;
 import com.cos.blog.service.EmailService;
-import com.cos.blog.service.UserService;
+import com.cos.blog.service.MemberService;
 
 @RestController
 public class UserApiController {
 
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired
@@ -44,14 +44,14 @@ public class UserApiController {
 	private BCryptPasswordEncoder encoder;
 
 	@PostMapping("/auth/joinProc")
-	public ResponseDto<Integer> save(@Valid @RequestBody User user, BindingResult bindingResult) {
+	public ResponseDto<Integer> save(@Valid @RequestBody Member user, BindingResult bindingResult) {
 		/*
 		 * if(bindingResult.hasErrors()) { return "/auth/joinForm"; }
 		 */
 
 		
-		 String resultUsername= userService.checkUsernameDuplication(user.getUsername());
-		  String resultEmail = userService.checkEmailDuplication(user.getEmail());
+		 String resultUsername= memberService.checkUsernameDuplication(user.getUsername());
+		  String resultEmail = memberService.checkEmailDuplication(user.getEmail());
 		  
 		  String disableUsername="아이디가 중복됩니다.";
 		  String disableEmail="이메일이 중복됩니다.";
@@ -66,7 +66,7 @@ public class UserApiController {
 			throw new IllegalStateException("중복되는 이메일입니다..");
 		}
 		 
-		userService.회원가입(user);
+		memberService.회원가입(user);
 
 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); 
@@ -76,7 +76,7 @@ public class UserApiController {
 	public String checkId(@PathVariable String username) {
 
 		String result = "N";
-		String flag = userService.checkUsernameDuplication(username);
+		String flag = memberService.checkUsernameDuplication(username);
 
 		System.out.println(flag);
 		if (flag.equals("아이디가 중복됩니다."))
@@ -89,7 +89,7 @@ public class UserApiController {
 	public String checkEmail(@PathVariable String email) {
 
 		String result = "N";
-		String flag = userService.checkEmailDuplication(email);
+		String flag = memberService.checkEmailDuplication(email);
 		System.out.println(flag);
 
 		if (flag.equals("이메일이 중복됩니다."))
@@ -106,14 +106,14 @@ public class UserApiController {
 	 * user = User.builder() .id(updateUserDto.getId())
 	 * .username(updateUserDto.getUsername()) .password(updateUserDto.getPassword())
 	 * .email(updateUserDto.getEmail()) .build(); System.out.println(user);
-	 * userService.회원수정(user); } else { // 접근주체 이메일과 저장된 이메일이 다를 경우 String result =
-	 * userService.checkEmailDuplication(updateUserDto.getEmail());
+	 * memberService.회원수정(user); } else { // 접근주체 이메일과 저장된 이메일이 다를 경우 String result =
+	 * memberService.checkEmailDuplication(updateUserDto.getEmail());
 	 * 
 	 * if(result.equals("이메일이 중복됩니다.")) { throw new
 	 * IllegalStateException("이메일이 중복됩니다."); } User user = User.builder()
 	 * .id(updateUserDto.getId()) .username(updateUserDto.getUsername())
 	 * .password(updateUserDto.getPassword()) .email(updateUserDto.getEmail())
-	 * .build(); userService.회원수정(user); }
+	 * .build(); memberService.회원수정(user); }
 	 */
 		
 			
@@ -136,12 +136,12 @@ public class UserApiController {
 	@PutMapping("/user/password")
 	public ResponseDto<Integer> updatePassword(@RequestBody UpdatePWDto updatePWDto ){ //세션
 		System.out.println(updatePWDto);
-		User user = userService.회원아이디찾기(updatePWDto.getId());
+		Member user = memberService.회원아이디찾기(updatePWDto.getId());
 		if(updatePWDto.getOriginPassword() == null || updatePWDto.getPassword() == null ) {
 			throw new BadCredentialsException("비밀번호가 입력되지 않았습니다.");
 		}
 		if(updatePWDto.getOriginPassword().equals("1")) {
-			User updateUser =User.builder()
+			Member updateUser =Member.builder()
 					.id(user.getId())
 					.username(user.getUsername())
 					.password(updatePWDto.getPassword())
@@ -149,13 +149,13 @@ public class UserApiController {
 					.role(user.getRole())
 					.createDate(user.getCreateDate())
 					.build();
-					userService.회원수정(updateUser);
+					memberService.회원수정(updateUser);
 		}
 		else {
 			boolean ismatch = encoder.matches(updatePWDto.getOriginPassword(), user.getPassword()); // 현재 비밀번호와 같은가?
 			
 			if(ismatch) { // 현재 비밀번호 이면 수정을 진행함
-				User updateUser =User.builder()
+				Member updateUser =Member.builder()
 						.id(user.getId())
 						.username(user.getUsername())
 						.password(updatePWDto.getPassword())
@@ -163,7 +163,7 @@ public class UserApiController {
 						.role(user.getRole())
 						.createDate(user.getCreateDate())
 						.build();
-				userService.회원수정(updateUser);
+				memberService.회원수정(updateUser);
 			}else {
 				throw new BadCredentialsException("현재 비밀번호가 일치하지 않습니다.");
 			}			
@@ -173,13 +173,13 @@ public class UserApiController {
 	}
 	@PutMapping("/user/email")
 	public ResponseDto<Integer> updateEmail(@RequestBody UpdateEmailDto updateEmailDto){
-		User user = userService.회원아이디찾기(updateEmailDto.getId());
+		Member user = memberService.회원아이디찾기(updateEmailDto.getId());
 		System.out.println(user);
 		
 		if(updateEmailDto.getEmail()==null) {
 			throw new IllegalStateException("이메일을 입력해주세요");
 		}
-		String result = userService.checkEmailDuplication(updateEmailDto.getEmail());
+		String result = memberService.checkEmailDuplication(updateEmailDto.getEmail());
 		
 		if(result.equals("이메일이 중복됩니다.")) {
 			throw new IllegalStateException("중복되는 이메일입니다.");
@@ -191,7 +191,7 @@ public class UserApiController {
 		 * if(!ismatch) { throw new BadCredentialsException("비밀번호가 다릅니다."); }
 		 */
 		
-		  User updateUser = User.builder() 
+		  Member updateUser = Member.builder() 
 				  .id(updateEmailDto.getId())
 		  .username(user.getUsername()) 
 		  .password(null)
@@ -199,14 +199,14 @@ public class UserApiController {
 		  .createDate(user.getCreateDate()) .role(user.getRole()) .build();
 		 
 		
-		 userService.회원수정(updateUser); 
+		 memberService.회원수정(updateUser); 
 		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
 	@DeleteMapping("/user/{id}")
 	public ResponseDto<Integer> delete(@PathVariable int id) {
-		/* User user = userService.회원아이디찾기(id); */
+		/* User user = memberService.회원아이디찾기(id); */
 		/*
 		 * if(deleteUserDto.getPassword().equals("")) { throw new
 		 * BadCredentialsException("비밀번호를 입력해주세요"); }
@@ -216,7 +216,7 @@ public class UserApiController {
 		 */
 		 
 		/* if(ismatch == true) { */
-				userService.회원탈퇴(id);			 
+				memberService.회원탈퇴(id);			 
 	/*	 }
 		 else {
 			 throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
@@ -227,7 +227,7 @@ public class UserApiController {
 
 	@GetMapping("/user/{username}")
 	public ResponseDto<Integer> checkUsername(@PathVariable String username) {
-		User user = userService.회원이름찾기(username);
+		Member user = memberService.회원이름찾기(username);
 		System.out.println(user);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
@@ -236,10 +236,10 @@ public class UserApiController {
 	public  @ResponseBody String validPwd(@RequestBody ValidPWDto validPWDto){
 		System.out.println(validPWDto);
 		
-		  User user = userService.회원아이디찾기(validPWDto.getUserid());
-		  System.out.println(user);
+		  Member member = memberService.회원아이디찾기(validPWDto.getUserid());
+		  System.out.println(member);
 		  
-		  boolean ismatch = encoder.matches(validPWDto.getPassword(), user.getPassword()); // 평문,암호문 순으로 넣어야 됨
+		  boolean ismatch = encoder.matches(validPWDto.getPassword(), member.getPassword()); // 평문,암호문 순으로 넣어야 됨
 		 		
 		  String result = null;
 		

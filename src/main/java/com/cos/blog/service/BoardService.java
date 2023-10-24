@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cos.blog.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
-import com.cos.blog.model.User;
+import com.cos.blog.model.Member;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepository;
-import com.cos.blog.repository.UserRepository;
+import com.cos.blog.repository.MemberRepository;
 
 //서비스는 하나의 트랜잭션(작업 단위)면 상관이 없지만 두 개 이상의 트랜잭션을 한번에 수행하기 위하여 사용한다.
 //스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌. IoC를 해준다.
@@ -24,12 +24,12 @@ public class BoardService {
 		@Autowired
 		private ReplyRepository replyRepository;
 		@Autowired
-		private UserRepository userRepository;
+		private MemberRepository userRepository;
 		
 		@Transactional
-		public void 글쓰기(Board board,User user) {
+		public void 글쓰기(Board board,Member member) {
 				board.setCount(0);
-				board.setUser(user);
+				board.setMember(member);
 				boardRepository.save(board);
 		}
 		@Transactional(readOnly = true)
@@ -63,7 +63,7 @@ public class BoardService {
 		@Transactional
 		public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
 			
-			User user = userRepository.findById(replySaveRequestDto.getUserid()).orElseThrow(()->{
+			Member member = userRepository.findById(replySaveRequestDto.getUserid()).orElseThrow(()->{
 				return new IllegalArgumentException("댓글 쓰기 실패: 작성자를 찾을 수 없습니다.");
 			});
 			Board board = boardRepository.findById(replySaveRequestDto.getBoardid()).orElseThrow(()->{
@@ -71,7 +71,7 @@ public class BoardService {
 			});
 			
 			Reply reply = Reply.builder()
-					.user(user)
+					.member(member)
 					.board(board)
 					.content(replySaveRequestDto.getContent())
 					.build();

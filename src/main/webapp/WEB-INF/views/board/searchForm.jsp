@@ -6,7 +6,7 @@
 		<div class="card m-2">
 			<div class="card-body card-clickable" data-searchid="${search.id }">
 				<h3 class="card-title"><b>제목 :</b> <i>${search.title}</i></h3>
-				<p><b>작성자 :</b> <i>${search.user.username }</i> / <b>작성 시간 :</b> <i>${search.createDate }</i></p>
+				<p><b>작성자 :</b> <i>${search.member.username }</i> / <b>작성 시간 :</b> <i>${search.createDate }</i></p>
 				<%-- <a href="/board/${search.id}" class="btn btn-primary">상세 보기</a> --%>
 			</div>
 		</div>

@@ -28,8 +28,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cos.blog.model.KakaoProfile;
 import com.cos.blog.model.OAuthToken;
-import com.cos.blog.model.User;
-import com.cos.blog.service.UserService;
+import com.cos.blog.model.Member;
+import com.cos.blog.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +45,7 @@ public class UserController {
 	private String cosKey;
 	
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -62,8 +62,8 @@ public class UserController {
 	
 	@GetMapping("/auth/updateForm/{id}")
 	public String updateForm(@PathVariable int id,Model model) {
-		model.addAttribute("userInfo", userService.회원아이디찾기(id));
-		System.out.println("아이디 결과: "+userService.회원아이디찾기(id));
+		model.addAttribute("userInfo", memberService.회원아이디찾기(id));
+		System.out.println("아이디 결과: "+memberService.회원아이디찾기(id));
 		return "user/updateForm";
 	}
 	
@@ -86,19 +86,19 @@ public class UserController {
 	
 	@GetMapping("/auth/users")
 	public String users(Model model,@PageableDefault(size = 10,sort = "id",direction = Direction.DESC )Pageable pageable) {
-		model.addAttribute("users", userService.회원목록(pageable));
-		model.addAttribute("Total", userService.회원목록(pageable).getTotalPages());
-		model.addAttribute("isEmpty", userService.회원목록(pageable).isEmpty());
-		System.out.println(userService.회원목록(pageable));
+		model.addAttribute("users", memberService.회원목록(pageable));
+		model.addAttribute("Total", memberService.회원목록(pageable).getTotalPages());
+		model.addAttribute("isEmpty", memberService.회원목록(pageable).isEmpty());
+		System.out.println(memberService.회원목록(pageable));
 		return "user/userList";
 	}
 	@GetMapping("/searchUser")
 	public String searchUser(String keyword,String type,Model model,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC)Pageable pageable) {
 		System.out.println("키워드: " + keyword + " 검색타입: " + type);
 		
-		Page<User> userList = null;
+		Page<Member> userList = null;
 		
-		userList = userService.회원관리(keyword,type,pageable);
+		userList = memberService.회원관리(keyword,type,pageable);
 		
 		System.out.println(userList);
 		model.addAttribute("users", userList);
@@ -191,7 +191,7 @@ public class UserController {
 				System.out.println("블로그서버 이메일: " + kakaoProfile.getKakao_account().getEmail());
 				System.out.println("블로그서버 비밀번호: " + cosKey);
 				
-				User kakaouser = User.builder()
+				Member kakaouser = Member.builder()
 						.username(kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId())
 						.password(cosKey)
 						.email(kakaoProfile.getKakao_account().getEmail())
@@ -199,11 +199,11 @@ public class UserController {
 						.build();
 				
 				//가입자 혹은 비가입자 체크 해서 처리
-				User originUser = userService.회원이름찾기(kakaouser.getUsername());
+				Member originUser = memberService.회원이름찾기(kakaouser.getUsername());
 				
 				if(originUser.getUsername() == null) {
 					System.out.println(kakaouser);
-					userService.회원가입(kakaouser);					
+					memberService.회원가입(kakaouser);					
 				}
 				// 로그인 처리
 				Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaouser.getUsername(), cosKey));

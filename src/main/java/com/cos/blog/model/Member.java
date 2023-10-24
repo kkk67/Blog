@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,9 +26,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
+@Table(name="members")
 // @DynamicInsert   insert시에 null인 필드를 빼줌
-public class User implements Serializable {
-	public User(int id2, String email2,int num) {
+public class Member implements Serializable {
+	public Member(int id2, String email2,int num) {
 		this.id = id2;
 		this.email = email2;
 	}

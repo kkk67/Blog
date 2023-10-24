@@ -4,7 +4,7 @@
 <%@ include file="../layout/header.jsp"%>
 <div class="container">
 		<button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
-		<c:if test = "${board.user.id == principal.user.id}"> 
+		<c:if test = "${board.member.id == principal.member.id}"> 
 <%-- 		<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
 		<button id="btn-delete"  class="btn btn-danger">삭제</button> --%>
 		</c:if>
@@ -12,7 +12,7 @@
 		<br/>
 		<div>
 			<%-- 글 번호 : <span id = "id" ><i>${board.id} </i></span> --%>
-			<p>작성자 : <span><i> ${board.user.username}</i></span></p>
+			<p>작성자 : <span><i> ${board.member.username}</i></span></p>
 			<p>작성 시간:<span><i> ${board.createDate }</i></span></p>
 		</div>
 		<br/>
@@ -26,7 +26,7 @@
 		<hr/>	
 		<div class="card">
 			<form>
-			<input type="hidden" id="userid" value="${principal.user.id}"/>
+			<input type="hidden" id="userid" value="${principal.member.id}"/>
 			<input type="hidden" id="boardid" value="${board.id}"/>
 			<div class="card-body"><textarea id="reply-content" class="form-control"  rows="1" > </textarea></div>
 			<div class="card-footer"><button type="button" id="btn-reply-save" class="btn btn-primary">등록</button></div>
@@ -40,8 +40,8 @@
 				<li id="comment--1" class="list-group-item d-flex  justify-content-between">
 					<div>${reply.content}</div>
 					<div class="d-flex">
-						<div class="font-italic">작성자: ${reply.user.username}&nbsp;</div>
-						<c:if test="${reply.user.id eq principal.user.id}">
+						<div class="font-italic">작성자: ${reply.member.username}&nbsp;</div>
+						<c:if test="${reply.member.id eq principal.member.id}">
 						<button onClick="index.replyDelete(${board.id},${reply.id})" class="badge">삭제</button>
 						</c:if>
 					</div>
