@@ -61,4 +61,5 @@
 		</c:otherwise>
 	</c:choose>
 </div>
+<br/>
 <%@ include file="../layout/footer.jsp"%>

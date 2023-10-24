@@ -24,6 +24,16 @@
 	 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
+<style>
+ 	.navbar{
+		position: sticky;
+		top: 0;
+		left: 0;
+		right: 0;
+			z-index: 100;
+			height: 60px;
+	} 
+</style>
 <body>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="/"> 홈 </a>
@@ -70,7 +80,7 @@
 					</form>
 	</nav>
 	<br/>
-	<%
+<%-- 	<%
 		String strReferer = request.getHeader("referer");
 
 	if(strReferer == null){
@@ -82,5 +92,5 @@
 	<%
 	return;
 	}
-	%>
+	%> --%>
 </body>

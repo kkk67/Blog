@@ -3,7 +3,7 @@
 <%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" href="/css/user.css">
 <div class="container">
-	  <h2>회원 관리</h2>
+	  <h2>회원 검색결과</h2>
 	  <p>하단에 있는 회원 리스트에서 삭제 수정이 가능합니다.</p> 
 	<div class="wrapper">
 	  				<form action="/searchUser" method="GET" class="form-inline justify-content-end " role="search"  >
@@ -19,7 +19,7 @@
 	  					</div>
 							<!-- <button class="btn btn-success bi bi-search"></button> --> <!-- 부트스트랩 아이콘을 이용한 검색버튼 -->
 						</form>       
-						<br/>
+						<br/>     
 	</div>
   <table class="table table-hover">
     <thead>
@@ -28,7 +28,6 @@
         <th style="text-align: center;">아이디</th>
         <th style="text-align: center;">이메일</th>
          <th></th>
-<!--           <th>삭제</th> -->
       </tr>
     </thead>
     <tbody>
@@ -37,7 +36,7 @@
         <td style="text-align: center;">${user.id }</td>
         <td style="text-align: center;">${user.username }</td>
         <td style="text-align: center;">${user.email }</td>
-         <td style="text-align:center;"><a href="/auth/updateForm/${user.id }" class="btn btn-primary">수정</a> 
+         <td style="text-align:center;"><a href="/auth/updateForm/${user.id }" class="btn btn-primary">수정</a>
          <Button class="btn btn-danger" onclick="index.delete(${user.id})">삭제</Button></td>
       </tr>    
     </c:forEach>
@@ -49,7 +48,7 @@
 		  <li class="page-item disabled" ><a class="page-link" href="#">Previous</a></li>
   		</c:when>
   		<c:otherwise>
-  			<li class="page-item" ><a class="page-link" href="?page= ${users.number}">Previous</a></li>
+  			<li class="page-item" ><a class="page-link" href="?type=${type}&keyword=${keyword}&page= ${users.number}">Previous</a></li>
   		</c:otherwise>
   	</c:choose>
   	
@@ -59,7 +58,7 @@
   				<li class="page-item active"><a class="page-link" href="?page=${page}">${page}</a></li>
   			</c:when>
   			<c:otherwise>
-  				<li class="page-item"><a class="page-link" href="?page=${page}">${page}</a></li>
+  				<li class="page-item"><a class="page-link" href="?type=${type}&keyword=${keyword}&page=${page}">${page}</a></li>
   			</c:otherwise>
   		</c:choose>
   	</c:forEach>
@@ -69,7 +68,7 @@
   		  <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
   		</c:when>
   		<c:otherwise>
-  		  <li class="page-item"><a class="page-link" href="?page=${users.number+2 }">Next</a></li>
+  		  <li class="page-item"><a class="page-link" href="?type=${type}&keyword=${keyword}&page=${users.number+2 }">Next</a></li>
   		</c:otherwise>
   	</c:choose>
 	</ul>

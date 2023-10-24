@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.User;
 import com.cos.blog.service.BoardService;
+import com.cos.blog.service.UserService;
 
 @Controller
 public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private UserService userService;
 
 	//@AuthenticationPrincipal PrincipalDetail principal
 

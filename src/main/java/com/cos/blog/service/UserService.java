@@ -37,6 +37,24 @@ public class UserService {
 		@Autowired
 		private BCryptPasswordEncoder encoder;
 		
+		@Transactional(readOnly = true)
+		public Page<User> 회원관리(String keyword,String type,Pageable pageable){
+			if(type.equals("ID")) {
+				/* int intKeyword = Integer.parseInt(keyword); */
+				return userRepository.findByIdContaining(keyword, pageable);
+			}
+			else if(type.equals("USERNAME")) {
+				return userRepository.findByUsernameContaining(keyword, pageable);
+			}
+			else if(type.equals("EMAIL")) {
+				return userRepository.findByEmailContaining(keyword, pageable);
+			}
+			else {
+				/* int intKeyword = Integer.parseInt(keyword); */
+				return userRepository.findByIdContainingOrUsernameContainingOrEmailContaining(keyword, keyword, keyword, pageable);
+			}
+		}
+		
 		
 		@Transactional(readOnly = true)
 		public User 회원이름찾기(String username) {

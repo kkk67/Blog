@@ -3,7 +3,9 @@ package com.cos.blog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.util.ReflectionUtils.DescribedFieldFilter;
 import org.springframework.data.web.PageableDefault;
@@ -89,6 +91,22 @@ public class UserController {
 		model.addAttribute("isEmpty", userService.회원목록(pageable).isEmpty());
 		System.out.println(userService.회원목록(pageable));
 		return "user/userList";
+	}
+	@GetMapping("/searchUser")
+	public String searchUser(String keyword,String type,Model model,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC)Pageable pageable) {
+		System.out.println("키워드: " + keyword + " 검색타입: " + type);
+		
+		Page<User> userList = null;
+		
+		userList = userService.회원관리(keyword,type,pageable);
+		
+		System.out.println(userList);
+		model.addAttribute("users", userList);
+		model.addAttribute("Total", userList.getTotalPages());
+		model.addAttribute("isEmpty", userList.isEmpty());
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("type", type);
+		return "user/searchUser";
 	}
 	
 	@GetMapping("/auth/kakao/callback") // 인가코드를 code에 받아서 매핑됨
