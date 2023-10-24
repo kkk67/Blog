@@ -11,6 +11,7 @@
 	<groupId>com.cos</groupId>
 	<artifactId>blog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>blog</name>
 	<description>My first Blog Project</description>
 	<properties>
@@ -41,6 +42,12 @@
 		<dependency>
 		  <groupId>javax.servlet</groupId>
 		  <artifactId>jstl</artifactId>
+		</dependency>
+		
+		<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-tomcat</artifactId>
+	      <scope>provided</scope> <!-- 안되어 있는 경우 변경! -->
 		</dependency>
 		<!--추가 라이브러리 종료 -->
 	
