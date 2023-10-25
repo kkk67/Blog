@@ -81,7 +81,7 @@ let index = {
 			dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면) => javascript 오브젝트로 변경
 		}).done(function(resp){ // 성공
 			alert("회원가입이 완료되었습니다.");
-			console.log(resp);
+			/*console.log(resp);*/
 			location.href="/";
 		}).fail(function(error){ //실패
 			alert(JSON.stringify(error.responseText));
@@ -150,7 +150,7 @@ let index = {
 				originPassword: '1',
 				password: $("#password").val(),
 			}
-			console.log(data);
+			/*console.log(data);*/
 				$.ajax({
 				type: "PUT",
 				url: "/user/password", 
@@ -159,7 +159,7 @@ let index = {
 				dataType: "json" 
 			}).done(function(resp){
 				alert("비밀번호 수정이 완료되었습니다.");
-				console.log(resp);
+				/*console.log(resp);*/
 				location.href="/user/logout";
 			}).fail(function(error){ 
 				alert(JSON.stringify(error.responseText));
@@ -170,7 +170,7 @@ let index = {
 			originPassword: $("#origin-password").val(),
 			password: $("#password").val(),
 		}
-		console.log(data);
+		/*console.log(data);*/
 			
 			if(!data.originPassword){
 			alert("현재 비밀번호를 입력해주세요");
@@ -206,7 +206,7 @@ let index = {
 			dataType: "json" 
 		}).done(function(resp){
 			alert("비밀번호 수정이 완료되었습니다.");
-			console.log(resp);
+			/*console.log(resp);*/
 			location.href="/user/logout";
 		}).fail(function(error){ 
 			alert(JSON.stringify(error.responseText));
@@ -249,7 +249,7 @@ let index = {
 			dataType: "json" 
 		}).done(function(resp){
 			alert("이메일 수정이 완료되었습니다.");
-			console.log(resp);
+			/*console.log(resp);*/
 			location.href="/user/logout";
 		}).fail(function(error){ 
 			alert(JSON.stringify(error.responseText));
@@ -277,7 +277,7 @@ let index = {
 				dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴게 json이라면) => javascript 오브젝트로 변경*/
 			}).done(function(resp){ // 성공
 				alert("회원탈퇴가 완료되었습니다.");
-				console.log(resp);
+				/*console.log(resp);*/
 				location.href="/user/logout";
 			}).fail(function(error){ //실패
 				alert(JSON.stringify(error.responseText));
@@ -291,7 +291,7 @@ let index = {
 			password: $("#password").val()
 		}
 		
-		console.log(data);	
+	/*	console.log(data);	*/
 		
 		if(!data.password){
 			alert("비밀번호를 입력해주세요");
@@ -305,7 +305,7 @@ let index = {
 			data: JSON.stringify(data), // http body 데이터
 			contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지 (MIME)
 		}).done(function(resp){
-			console.log(resp);
+			/*console.log(resp);*/
 			if(resp == null){
 				alert("비밀번호를 입력해주세요");
 				document.getElementById('password').focus();
@@ -335,7 +335,7 @@ let index = {
 		let data={
 			username: $("#username").val()
 		};
-		console.log(data);
+		/*console.log(data);*/
 		$.ajax({
 			type: "GET",
 			url: `/auth/joinProc/${data.username}/existsUsername`, 
@@ -349,7 +349,7 @@ let index = {
 				$("#userNameResult").css("color","red");
 				return;
 			}
-			console.log(resp);
+			/*console.log(resp);*/
 			return resp;
 		}).fail(function(error){
 			alert(JSON.stringify(error.responseText));
@@ -362,7 +362,7 @@ let index = {
 			email: $("#email").val()
 		};
 		var returnValue;
-		console.log(data);
+	/*	console.log(data);*/
 		$.ajax({
 			type: "GET",
 			url: `/auth/joinProc/${data.email}/existsEmail`, 
@@ -372,13 +372,13 @@ let index = {
 /*				$("#emailResult").text("사용 가능한 이메일입니다..");
 				$("#emailResult").css("color","green");*/ 
 				document.getElementById("hidden-text").value=true;
-				console.log($("#hidden-text").val());
+				/*console.log($("#hidden-text").val());*/
 				returnValue = $("#hidden-text").val();
 			}else{
 /*				$("#emailResult").text("이미 사용중인 이메일입니다..");
 				$("#emailResult").css("color","red");*/
 				document.getElementById("hidden-text").value=false;
-				console.log($("#hidden-text").val());
+				/*console.log($("#hidden-text").val());*/
 				returnValue = $("#hidden-text").val();
 			}
 		}).fail(function(error){
@@ -407,7 +407,7 @@ let index = {
 			}
 			var result = this.validEmail();
 		/*	var result = document.getElementById("hidden-text").value;*/
-			console.log(result);
+			/*console.log(result);*/
 			
 			if(checknum == 1){ // 회원가입
 					if(result == "false"){
@@ -424,7 +424,7 @@ let index = {
 							contentType: "application/json; charset=utf-8",
 						}).done(function(resp){
 							alert("인증번호 발송");
-							console.log(resp);
+							/*console.log(resp);*/
 							$("#Confirm").val(resp);
 							/*index.confirmOnkey();*/
 						}).fail(function(error){
@@ -442,7 +442,7 @@ let index = {
 						contentType: "application/json; charset=utf-8",
 					}).done(function(resp){
 						alert("인증번호 발송");
-						console.log(resp);
+						/*console.log(resp);*/
 						$("#Confirm").val(resp);
 						/*index.confirmOnkey();*/
 					}).fail(function(error){
@@ -454,8 +454,8 @@ let index = {
 				var number1 = $("#number").val();
 				var number2 = $("#Confirm").val();
 				
-				console.log(number1);
-				console.log(number2);
+		/*		console.log(number1);
+				console.log(number2);*/
 				if(number1 != number2){
 					alert("인증번호가 잘못되었습니다.");
 				}
