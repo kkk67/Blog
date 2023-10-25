@@ -41,6 +41,7 @@
 	</form>
 	<br />
 	<button id="btn-save" class="btn btn-primary form-control">회원가입</button>
+	<p>test</p>
 </div>
 <script src="/js/user.js"></script>
 <%@ include file="../layout/footer.jsp"%>
