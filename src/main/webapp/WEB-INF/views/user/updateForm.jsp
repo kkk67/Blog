@@ -4,11 +4,9 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container justify-content-center" style="width: auto;"> 
-<%-- 	<button id="btn-update"  class="btn btn-primary" >수정</button>
-	<button id="btn-delete" class="btn btn-danger" onclick="index.delete(${principal.user.id})">회원탈퇴</button>
-	<br/><br/> --%>
+	<!-- <button id="btn-update"  class="btn btn-primary" >수정</button> -->
 	
-	<form style="width:auto;">
+	<form style="width:auto; margin-top:100px;">
 		<input type="hidden" id ="id" value="${userInfo.id }"/>
 		<div class="form-group">
 			<label for="username">Username</label> <input type="text"
@@ -26,6 +24,8 @@
 			<h3>${userInfo.email }</h3>
 			<a class="btn btn-secondary" data-toggle="modal" data-target="#EmailModal" style="float: right;" onclick="disabledFoam()">수정</a>
 		</div>
+		<br/><br/>
+		<button id="btn-delete" class="btn btn-danger form-control" onclick="index.delete(${principal.member.id})">회원탈퇴</button>
 			<!--비밀번호 모달 -->
 			<div class="modal fade" id="PasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	    <div class="modal-dialog" role="document">
