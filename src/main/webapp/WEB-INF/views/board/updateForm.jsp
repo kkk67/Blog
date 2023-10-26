@@ -20,7 +20,7 @@
   <script>
       $('.summernote').summernote({
         tabsize: 2,
-        height: 800
+        height: 500
       });
     </script>
 <script src ="/js/board.js"></script>

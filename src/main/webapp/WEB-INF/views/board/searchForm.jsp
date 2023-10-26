@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp"%>
-<div class="container">
+<div class="container" style="margin-top: 100px;">
 	<c:forEach var="search" items="${search.content }">
 		<div class="card m-2">
 			<div class="card-body card-clickable" data-searchid="${search.id }">
@@ -46,7 +46,14 @@
 	</c:choose>
 	
 	<c:forEach  var="page"  begin="1"  end="${Total }">
-		<li class="page-item"><a class="page-link" href="/search?keyword=${keyword }&page=${page}">${page}</a></li>
+		<c:choose>
+			<c:when test="${search.number eq page-1}">
+				<li class="page-item active"><a class="page-link" href="/search?keyword=${keyword }&page=${page}">${page}</a></li>
+			</c:when>
+			<c:otherwise>
+				<li class="page-item"><a class="page-link" href="/search?keyword=${keyword }&page=${page}">${page}</a></li>
+			</c:otherwise>
+		</c:choose>	
 	</c:forEach>
 	
 	<c:choose>

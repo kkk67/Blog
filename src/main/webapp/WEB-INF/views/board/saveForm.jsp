@@ -3,7 +3,7 @@
 
 <%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" href="/css/board.css">
-<div class="container">
+<div class="container" >
   <h2>게시글 작성</h2>
   <p>하단에 있는 제목과 내용을 입력하여 작성이 가능합니다.</p> 
   <div class="wrapper" style="width:auto;">
@@ -20,7 +20,7 @@
   <script>
       $('.summernote').summernote({
         tabsize: 2,
-        height: 800
+        height: 500
       });
     </script>
 <script src ="/js/board.js"></script>

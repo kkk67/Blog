@@ -3,8 +3,10 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div class="container">
+<div class="container" style="margin-top: 50px;">
 	<form action="/auth/loginProc" method= "post">
+	<h1>로그인</h1>
+	<p style="margin-bottom: 50px;">username(아이디), password(비밀번호)를 입력해주세요.</p>
 		<div class="form-group">
 			<label for="username">Username</label> <input type="text"
 				class="form-control" name = "username" placeholder="Enter Username" id="username">

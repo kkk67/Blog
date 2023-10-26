@@ -3,7 +3,7 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div class="container justify-content-center">
+<div class="container justify-content-center" style="margin-top:100px;">
 	<h4 style="text-align: center; font-weight:bold;">비밀번호 확인</h4>
 	
 	<div class="form-group">

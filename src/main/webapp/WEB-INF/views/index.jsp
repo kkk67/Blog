@@ -25,7 +25,7 @@ function dateFormat(date) {
 	console.log(createDate);
 </script> -->
 
-<div class="container"  style="height: auto;">
+<div class="container"  style="height: auto; margin-top: 100px;">
 	<c:forEach var="board" items="${boards.content }">
 		<div class="card m-2">
 			 <span id = "id"  style="display:none;"><i>${board.id} </i></span>
