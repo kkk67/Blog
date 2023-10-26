@@ -35,7 +35,7 @@
 	} 
 </style>
 <body>
-	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark"  style="height: auto;;">
 		<a class="navbar-brand" href="/"> 홈 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#collapsibleNavbar">
@@ -73,7 +73,7 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
-				  <form action="/search" method="GET" class="form-inline justify-content-end " role="search">
+				  <form action="/search" method="GET" class="form-inline justify-content-end " role="search" style="width:auto;">
 	        			<input type="search" name="keyword" class="form-control" id="keyword" placeholder="search">
 	       				 <button class="btn btn-outline-success">Search</button>
 						<!-- <button class="btn btn-success bi bi-search"></button> --> <!-- 부트스트랩 아이콘을 이용한 검색버튼 -->

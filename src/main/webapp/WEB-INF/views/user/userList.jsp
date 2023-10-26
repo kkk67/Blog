@@ -5,7 +5,7 @@
 <div class="container">
 	  <h2>회원 관리</h2>
 	  <p>하단에 있는 회원 리스트에서 삭제 수정이 가능합니다.</p> 
-	<div class="wrapper">
+	<div class="wrapper" style="width:auto;">
 	  				<form action="/searchUser" method="GET" class="form-inline justify-content-end " role="search"  >
 	  						<select id="selectBox"  name="type" class="selectpicker" style="margin: 0; float: left;"  >
 							    <option value="ALL">전체 검색</option>

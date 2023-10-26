@@ -3,7 +3,7 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div class="container justify-content-center"  style="width: 900px; margin-top: 100px;">
+<div class="container justify-content-center"  style="width: auto; margin-top: 100px;">
 	<form class="form-horizontal"    >
 		<div class="form-group"  >
 			<div style=>

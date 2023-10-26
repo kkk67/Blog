@@ -3,12 +3,12 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div class="container justify-content-center" style="width: 900px"> 
+<div class="container justify-content-center" style="width: auto;"> 
 <%-- 	<button id="btn-update"  class="btn btn-primary" >수정</button>
 	<button id="btn-delete" class="btn btn-danger" onclick="index.delete(${principal.user.id})">회원탈퇴</button>
 	<br/><br/> --%>
 	
-	<form style="width:800px;">
+	<form style="width:auto;">
 		<input type="hidden" id ="id" value="${userInfo.id }"/>
 		<div class="form-group">
 			<label for="username">Username</label> <input type="text"
