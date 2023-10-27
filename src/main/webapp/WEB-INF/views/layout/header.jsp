@@ -78,7 +78,7 @@
 								<li class="nav-item"><a class="nav-link"
 									href="/board/saveForm">글쓰기</a></li>
 								<li class="nav-item"><a class="nav-link"
-									href="/auth/updateForm">회원정보</a></li>
+									href="/auth/updateForm/${principal.member.id }">회원정보</a></li>
 								<li class="nav-item"><a class="nav-link"
 									href="/user/logout">로그아웃</a></li>
 							</ul>		

@@ -63,7 +63,7 @@ public class UserController {
 	@GetMapping("/auth/updateForm/{id}")
 	public String updateForm(@PathVariable int id,Model model) {
 		model.addAttribute("userInfo", memberService.회원아이디찾기(id));
-		System.out.println("아이디 결과: "+memberService.회원아이디찾기(id));
+		
 		return "user/updateForm";
 	}
 	
