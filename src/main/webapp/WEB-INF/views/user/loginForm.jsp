@@ -20,7 +20,7 @@
 			<div id="valid" class="alert alert-danger" role="alert">${exception }</div>
 		</c:if>
 	<button id="btn-login" class="btn btn-primary">로그인</button>
-	<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=cdee08dfe352b3104e97fedffd2f90d6&redirect_uri=http://localhost:8000/auth/kakao/callback"><img height="38px"  src="/image/kakao_login_button.png"></a>
+	<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=cdee08dfe352b3104e97fedffd2f90d6&redirect_uri=http://uniblog.site/auth/kakao/callback"><img height="38px"  src="/image/kakao_login_button.png"></a>
 	</form>
 </div>
 

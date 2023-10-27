@@ -2,6 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" href="/css/user.css">
+<script>
+	if(${principal.member.role eq 'ADMIN'}){
+		
+	}
+	else{
+			alert("잘못된 접근입니다.");
+			location.href="/";		
+	}
+</script>
 <div class="container">
 	  <h2>회원 관리</h2>
 	  <p>하단에 있는 회원 리스트에서 삭제 수정이 가능합니다.</p> 

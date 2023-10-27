@@ -62,14 +62,28 @@
 					</ul>
 				</c:when>
 				<c:otherwise>
-					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link"
-							href="/board/saveForm">글쓰기</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="/auth/ConfirmForm">회원정보</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="/user/logout">로그아웃</a></li>
-					</ul>
+					<c:choose>
+						<c:when test="${empty principal.member.oauth }">
+							<ul class="navbar-nav">
+								<li class="nav-item"><a class="nav-link"
+									href="/board/saveForm">글쓰기</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="/auth/ConfirmForm">회원정보</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="/user/logout">로그아웃</a></li>
+							</ul>						
+						</c:when>
+						<c:otherwise>
+							<ul class="navbar-nav">
+								<li class="nav-item"><a class="nav-link"
+									href="/board/saveForm">글쓰기</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="/auth/updateForm">회원정보</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="/user/logout">로그아웃</a></li>
+							</ul>		
+						</c:otherwise>
+					</c:choose>
 				</c:otherwise>
 			</c:choose>
 		</div>

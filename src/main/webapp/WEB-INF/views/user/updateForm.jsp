@@ -3,6 +3,18 @@
 
 <%@ include file="../layout/header.jsp"%>
 
+<script>
+	if(${principal.member.role eq 'ADMIN'}){
+		
+	}
+	else{
+		if(${principal.member.id != userInfo.id}){
+			alert("잘못된 접근입니다.");
+			location.href="/";		
+		}		
+	}
+</script>
+
 <div class="container justify-content-center" style="width: auto;"> 
 	<!-- <button id="btn-update"  class="btn btn-primary" >수정</button> -->
 	

@@ -3,6 +3,17 @@
 
 <%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" href="/css/board.css">
+<script>
+	if(${principal.member.role eq 'ADMIN'}){
+		
+	}
+	else{
+		if(${principal.member.id != boards.member.id}){
+			alert("잘못된 접근입니다.");
+			location.href="/";		
+		}		
+	}
+</script>
 <div class="container">
 	  <h2>게시글  수정</h2>
   <p>하단에 있는 제목과 내용을 입력하여 수정이 가능합니다.</p> 
