@@ -8,11 +8,13 @@
 		
 	}
 	else{
-		if(${principal.member.id != boards.member.id}){
+		if(${principal.member.id != board.member.id}){
 			alert("잘못된 접근입니다.");
 			location.href="/";		
 		}		
 	}
+	console.log(${principal.member.id});
+	console.log(${board.member.id});
 </script>
 <div class="container">
 	  <h2>게시글  수정</h2>

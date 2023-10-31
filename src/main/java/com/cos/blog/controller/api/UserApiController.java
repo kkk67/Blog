@@ -140,7 +140,7 @@ public class UserApiController {
 		if(updatePWDto.getOriginPassword() == null || updatePWDto.getPassword() == null ) {
 			throw new BadCredentialsException("비밀번호가 입력되지 않았습니다.");
 		}
-		if(updatePWDto.getOriginPassword().equals("1")) {
+		if(updatePWDto.getOriginPassword().equals("1")) { // admin
 			Member updateUser =Member.builder()
 					.id(user.getId())
 					.username(user.getUsername())

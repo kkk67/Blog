@@ -4,10 +4,27 @@
 <div class="container" style="margin-top: 100px;">
 	<c:forEach var="search" items="${search.content }">
 		<div class="card m-2">
-			<div class="card-body card-clickable" data-searchid="${search.id }">
-				<h3 class="card-title"><b>제목 :</b> <i>${search.title}</i></h3>
-				<p><b>작성자 :</b> <i>${search.member.username }</i> / <b>작성 시간 :</b> <i>${search.createDate }</i></p>
-				<%-- <a href="/board/${search.id}" class="btn btn-primary">상세 보기</a> --%>
+		<span id = "id"  style="display:none;"><i>${search.id} </i></span>
+			<div class="card-body card-hoverable" >
+				<div class="card-clickable" data-searchid="${search.id }">
+					<h3 class="card-title"><i><b>제목 :</b></i> <i>${search.title}</i></h3>
+					<p><b>작성자 :</b> <i>${search.member.username }</i> / <b>작성 시간 :</b> <i>${search.createDate }</i></p>
+					<%-- <a href="/board/${search.id}" class="btn btn-primary">상세 보기</a> --%>
+				</div>
+				<c:choose>
+					<c:when test="${search.member.id == principal.member.id}">
+						<div>
+							<a href="/board/${search.id}/updateForm" class="btn btn-warning">수정</a>
+							<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+						</div>
+					</c:when>
+					<c:when test="${principal.member.role eq 'ADMIN'}">
+							<div>
+							<a href="/board/${search.id}/updateForm" class="btn btn-warning">수정</a>
+							<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+						</div>
+					</c:when>
+				</c:choose>
 			</div>
 		</div>
 	</c:forEach>
@@ -17,10 +34,16 @@
 			var searchid = $(this).data("searchid");
 			var url = "/board/" + searchid;
 			window.open(url,"_self");
+		}); 
+		$(".card-clickable").hover(function(){
+			$(this).css("cursor","pointer");
+		}, function(){
+			$(this).css("cursor","default");
 		});
 		
-		$(".card-clickable").hover(function(){
-			$(this).css("background-color","#007bff");
+		
+		$(".card-hoverable").hover(function(){
+			$(this).css("background-color","#90AFFF");  /* #007bff */
 		}, function(){
 			$(this).css("background-color","white");
 		});
@@ -69,4 +92,5 @@
 	</c:choose>
 </div>
 <br/>
+<script src ="/js/board.js"></script>
 <%@ include file="../layout/footer.jsp"%>

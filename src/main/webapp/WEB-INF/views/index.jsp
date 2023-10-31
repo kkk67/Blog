@@ -27,24 +27,26 @@ function dateFormat(date) {
 
 <div class="container"  style="height: auto; margin-top: 100px;">
 	<c:forEach var="board" items="${boards.content }">
-		<div class="card m-2">
+		<div class="card m-2 card-hoverable"  >
 			 <span id = "id"  style="display:none;"><i>${board.id} </i></span>
-			<div class="card-body card-clickable" data-boardid="${board.id }")>
-				<h3 class="card-title"><b>제목 :</b> <i>${board.title}</i></h3>
-				<p><b>작성자 :</b> <i>${board.member.username } </i> / <i><b>작성 시간 :</b> ${board.createDate }</i></p>
+			<div class="card-body " >
+				<div class="card-clickable" data-boardid="${board.id }")>
+					<h3 class="card-title"><i><b>제목 :</b></i> <i>${board.title}</i></h3>
+					<p><b>작성자 :</b> <i>${board.member.username } </i> / <i><b>작성 시간 :</b> ${board.createDate }</i></p>				
+				</div>
 				
 				<c:choose>
 					<c:when test="${board.member.id == principal.member.id}">
-						<p>	
-					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
-					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
-					</p>
+						<div>
+							<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+							<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+						</div>
 					</c:when>
 					<c:when test="${principal.member.role eq 'ADMIN'}">
-						<p>	
-					<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
-					<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
-					</p>
+							<div>
+							<a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+							<button id="btn-delete"  type="button" role="button" class="btn btn-danger">삭제</button>
+						</div>
 					</c:when>
 				</c:choose>
 					<%-- <p>	<c:if test = "${board.user.id == principal.user.id}"> 
@@ -66,10 +68,16 @@ function dateFormat(date) {
 			var boardId = $(this).data("boardid");
 			var url = "/board/" + boardId;
 			window.open(url,"_self");
+		}); 
+		$(".card-clickable").hover(function(){
+			$(this).css("cursor","pointer");
+		}, function(){
+			$(this).css("cursor","default");
 		});
 		
-		$(".card-clickable").hover(function(){
-			$(this).css("background-color","#007bff");
+		
+		$(".card-hoverable").hover(function(){
+			$(this).css("background-color","#90AFFF");  /* #007bff */
 		}, function(){
 			$(this).css("background-color","white");
 		});

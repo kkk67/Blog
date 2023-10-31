@@ -46,7 +46,9 @@ public class BoardService {
 		
 		@Transactional
 		public void 삭제하기(int id) {
-			System.out.println("글 삭제하기 : " + id);
+			if(replyRepository.existsByBoardId(id)) {
+				replyRepository.deleteByBoardId(id);
+			}
 				boardRepository.deleteById(id);
 		}
 		@Transactional
